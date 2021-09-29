@@ -1,0 +1,68 @@
+[
+    {
+        "name": "Melvin Goodwin",
+        "address": "89293 Barton Square Suite 596\nSouth Joe, LA 01566",
+        "birthdate": "1981-07-14",
+        "telephone": "(704)434-4096x4526",
+        "id": 566815,
+        "pets": [
+            {
+                "name": "elf",
+                "specie": "free-lizard",
+                "description": "vital",
+                "gender": "male",
+                "id": 39,
+                "weight": 766117
+            },
+            {
+                "name": "fish",
+                "specie": "famous-horse",
+                "description": "divine",
+                "gender": "female",
+                "id": 53,
+                "weight": 385443
+            }
+        ]
+    },
+    {
+        "name": "Heidi Brown",
+        "address": "33037 Collins Streets Suite 557\nDeborahtown, NY 69236",
+        "birthdate": "2021-02-24",
+        "telephone": "099.913.8820",
+        "id": 119476,
+        "pets": [
+            {
+                "name": "feline",
+                "specie": "clear-filly",
+                "description": "awake",
+                "gender": "male",
+                "id": 98,
+                "weight": 598976
+            },
+            {
+                "name": "frog",
+                "specie": "right-wren",
+                "description": "pure",
+                "gender": "male",
+                "id": 22,
+                "weight": 535881
+            },
+            {
+                "name": "pig",
+                "specie": "native-mite",
+                "description": "in",
+                "gender": "male",
+                "id": 26,
+                "weight": 572282
+            },
+            {
+                "name": "robin",
+                "specie": "unique-salmon",
+                "description": "right",
+                "gender": "female",
+                "id": 2,
+                "weight": 341834
+            }
+        ]
+    }
+]
