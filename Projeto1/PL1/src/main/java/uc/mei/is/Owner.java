@@ -12,7 +12,7 @@ public class Owner {
     private String name;
     private String address;
     private Date birthdate;
-    private long telephone;
+    private String telephone;
     private ArrayList<Pet> pets;
 
 
@@ -20,7 +20,7 @@ public class Owner {
     public Owner() {
     }
 
-    public Owner(long id, String name, String address, Date birthdate, long telephone) {
+    public Owner(long id, String name, String address, Date birthdate, String telephone) {
         super();
         this.name = name;
         this.id = id;
@@ -51,7 +51,7 @@ public class Owner {
     }
 
     @XmlElement
-    public long getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
@@ -71,7 +71,7 @@ public class Owner {
         this.birthdate = birthdate;
     }
 
-    public void setTelephone(long telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 

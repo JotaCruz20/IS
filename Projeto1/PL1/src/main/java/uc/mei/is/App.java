@@ -1,7 +1,12 @@
 package uc.mei.is;
+import com.google.gson.Gson;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -10,23 +15,28 @@ import javax.xml.bind.Marshaller;
 public class App 
 {
     public static void main( String[] args ) throws Exception {
-        JAXBContext contextObj = JAXBContext.newInstance(Class.class);
+        try {
+            JSONParser parser = new JSONParser();
+            //Use JSONObject for simple JSON and JSONArray for array of JSON.
+            JSONArray data = (JSONArray) parser.parse(
+                    new FileReader("owners.json"));//path to the JSON file.
 
-        Marshaller marshallerObj = contextObj.createMarshaller();
-        marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            String json = data.toJSONString();
+            Gson gson = new Gson();
+            Owner[] owners = gson.fromJson(json, Owner[].class);
 
-        Student student1 = new Student("Alberto",21,201134441110L);
-        Student student2 = new Student("Patricia",22,201134441116L);
-        Student student3 = new Student("Luis",21,201134441210L);
+            JAXBContext contextObj = JAXBContext.newInstance(Owner.class);
+
+            Marshaller marshallerObj = contextObj.createMarshaller();
+            marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 
-        List<Student> students = new ArrayList<>();
-        students.add(student1);
-        students.add(student2);
-        students.add(student3);
+            marshallerObj.marshal(owners, new FileOutputStream("pet.xml"));
 
-        Class newClass = new Class(students);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
 
-        marshallerObj.marshal(newClass, new FileOutputStream("employee.xml"));
+
     }
 }

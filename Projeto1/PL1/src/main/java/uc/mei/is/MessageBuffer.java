@@ -1,57 +1,65 @@
 package uc.mei.is;
 
+import com.google.gson.Gson;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.msgpack.*;
 import org.msgpack.annotation.Message;
 
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class MessageBuffer {
     @Message
-    public static class Student1 {
-        public String name;
-        public int age;
-        public long id;
+    public static class Owner{
+        private long id;
+        private String name;
+        private String address;
+        private Date birthdate;
+        private String telephone;
+        private ArrayList<Pet> pets;
+
     }
 
     @Message
-    public static class Class1 {
-        public List<Student1> students;
+    public static class Pet {
+        private long id;
+        private String name;
+        private String specie;
+        private String gender;
+        private Date birthdate;
+        private long weight;
+        private String description;
     }
 
     public static void main(String[] args) throws Exception {
-        Student1 student = new Student1();
-        student.name="Andre";
-        student.age=21;
-        student.id=12919;
+        try {
+            JSONParser parser = new JSONParser();
+            //Use JSONObject for simple JSON and JSONArray for array of JSON.
+            JSONArray data = (JSONArray) parser.parse(
+                    new FileReader("owners.json"));//path to the JSON file.
 
-        Student1 student2 = new Student1();
-        student2.name="Ma";
-        student2.age=22;
-        student2.id=12918;
+            String json = data.toJSONString();
+            Gson gson = new Gson();
+            Owner[] owners = gson.fromJson(json, Owner[].class);
 
-        Student1 student3 = new Student1();
-        student3.name="Me";
-        student3.age=23;
-        student3.id=12917;
+            MessagePack msgpack = new MessagePack();
+            // Serialize
+            byte[] bytes = msgpack.write(owners);
+            OutputStream outputStream = new FileOutputStream("message.bin");
+            outputStream.write(bytes);
+            // Deserialize
+                Owner[] dst = msgpack.read(bytes, Owner[].class);
 
-        List<Student1> student1s = new ArrayList<>();
-        student1s.add(student3);
-        student1s.add(student2);
-        student1s.add(student);
-
-        Class1 class1 = new Class1();
-        class1.students = student1s;
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
 
 
-        MessagePack msgpack = new MessagePack();
-        // Serialize
-        byte[] bytes = msgpack.write(class1);
-        OutputStream outputStream = new FileOutputStream("message.bin");
-        outputStream.write(bytes);
-        // Deserialize
-        Class1 dst = msgpack.read(bytes, Class1.class);
     }
 }
