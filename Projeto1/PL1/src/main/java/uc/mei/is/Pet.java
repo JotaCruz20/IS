@@ -1,8 +1,10 @@
 package uc.mei.is;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@XmlRootElement
 public class Pet {
     private long id;
     private String name;

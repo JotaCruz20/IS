@@ -7,11 +7,11 @@ import org.json.simple.parser.ParseException;
 import org.msgpack.*;
 import org.msgpack.annotation.Message;
 
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class MessageBuffer {
@@ -37,29 +37,48 @@ public class MessageBuffer {
         private String description;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static ArrayList<Long> function(String file){
         try {
+            //load from json
             JSONParser parser = new JSONParser();
-            //Use JSONObject for simple JSON and JSONArray for array of JSON.
-            JSONArray data = (JSONArray) parser.parse(
-                    new FileReader("owners.json"));//path to the JSON file.
-
+            JSONArray data = (JSONArray) parser.parse(new FileReader(file));
             String json = data.toJSONString();
             Gson gson = new Gson();
             Owner[] owners = gson.fromJson(json, Owner[].class);
 
+            //Message Pack
             MessagePack msgpack = new MessagePack();
+
             // Serialize
+            long startTimeSerialize = System.currentTimeMillis();
             byte[] bytes = msgpack.write(owners);
-            OutputStream outputStream = new FileOutputStream("message.bin");
+            OutputStream outputStream = new FileOutputStream("outputs/message.bin");
             outputStream.write(bytes);
+            long endTimeSerialize = System.currentTimeMillis();
+
             // Deserialize
-                Owner[] dst = msgpack.read(bytes, Owner[].class);
+            long startTimeDeserialize = System.currentTimeMillis();
+            byte[] bytes1 = Files.readAllBytes(Paths.get("outputs/message.bin"));
+            Owner[] dst = msgpack.read(bytes1, Owner[].class);
+            long endTimeDeserialize = System.currentTimeMillis();
+
+            return new ArrayList<>(Arrays.asList((endTimeSerialize-startTimeSerialize), (endTimeDeserialize-startTimeDeserialize)));
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
+            return null;
         }
+    }
 
-
+    public static void main(String[] args) throws Exception {
+        ArrayList<Long> serializeTimes = new ArrayList<>();
+        ArrayList<Long> deserializeTimes = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            ArrayList<Long> list = function("jsons/owners.json");
+            serializeTimes.add(list.get(0));
+            deserializeTimes.add(list.get(1));
+        }
+        System.out.println(serializeTimes);
+        System.out.println(deserializeTimes);
     }
 }

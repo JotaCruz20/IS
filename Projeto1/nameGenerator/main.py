@@ -37,18 +37,29 @@ def generator(n, m):
     for i in range(0, n):
         # PET
         pets = []
-        for j in range(0, random.randint(1, m)):
+        for j in range(m):
             pets.append(Pet(petname.name(), petname.Generate(), petname.adjective(),
-                            'female' if random.random() > 0.5 else 'male', random.randint(0, 100),
-                            random.randint(0, 1000000),fake.date()))
+                            'female' if random.random() > 0.5 else 'male', 
+                            random.randint(0, 1000000), random.randint(0, 100),fake.date()))
 
         # OWNER
         owners.append(Owner(fake.name(), fake.address(), fake.date(), fake.phone_number(),
                             random.randint(0, 1000000), pets))
 
     jsontracks = json.dumps(owners, default=lambda o: o.encode(), indent=4)
-    with open('owners.json', 'w') as f:
+    with open(f'owners_{n}_{m}.json', 'w') as f:
         f.write(jsontracks)
+    print("Acabei")
 
 
-generator(2, 10)
+generator(10, 1)
+generator(10, 10)
+generator(10, 100)
+generator(10, 1000)
+generator(10, 10000)
+generator(10, 100000)
+
+generator(1, 1)
+generator(10, 10)
+generator(100, 100)
+generator(1000, 1000)

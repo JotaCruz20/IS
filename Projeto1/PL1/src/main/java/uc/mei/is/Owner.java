@@ -16,18 +16,16 @@ public class Owner {
     private ArrayList<Pet> pets;
 
 
-
     public Owner() {
     }
 
-    public Owner(long id, String name, String address, Date birthdate, String telephone) {
-        super();
-        this.name = name;
+    public Owner(long id, String name, String address, Date birthdate, String telephone, ArrayList<Pet> pets) {
         this.id = id;
-        this.telephone=telephone;
-        this.address=address;
-        this.birthdate=birthdate;
-        this.pets = new ArrayList<Pet>();
+        this.name = name;
+        this.address = address;
+        this.birthdate = birthdate;
+        this.telephone = telephone;
+        this.pets = pets;
     }
 
     @XmlElement
@@ -53,6 +51,11 @@ public class Owner {
     @XmlElement
     public String getTelephone() {
         return telephone;
+    }
+
+    @XmlElement
+    public String getAddress() {
+        return address;
     }
 
     public void setId(long id) {
