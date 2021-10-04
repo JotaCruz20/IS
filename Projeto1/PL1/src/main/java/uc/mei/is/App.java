@@ -22,26 +22,30 @@ public class App
         try {
             //load from json
             JSONParser parser = new JSONParser();
-            JSONArray data = (JSONArray) parser.parse(new FileReader("jsons/owners.json"));
+            JSONArray data = (JSONArray) parser.parse(new FileReader(file));
 
             String json = data.toJSONString();
             Gson gson = new Gson();
             Owner[] owners = gson.fromJson(json, Owner[].class);
             Owners owners1 = new Owners(owners);
 
+            //XML
+            FileOutputStream fso = new FileOutputStream("outputs/pet.xml");
+            FileReader fr = new FileReader("outputs/pet.xml");
+
             // Serialize
             long startTimeSerialize = System.currentTimeMillis();
             JAXBContext contextObj = JAXBContext.newInstance(Owners.class);
             Marshaller marshallerObj = contextObj.createMarshaller();
             marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshallerObj.marshal(owners1, new FileOutputStream("outputs/pet.xml"));
+            marshallerObj.marshal(owners1, fso);
             long endTimeSerialize = System.currentTimeMillis();
 
             // Deserialize
             long startTimeDeserialize = System.currentTimeMillis();
             JAXBContext contextObj1 = JAXBContext.newInstance(Owners.class);
             Unmarshaller unmarshaller = contextObj1.createUnmarshaller();
-            Owners owners2 = (Owners) unmarshaller.unmarshal(new FileReader("outputs/pet.xml"));
+            Owners owners2 = (Owners) unmarshaller.unmarshal(fr);
             long endTimeDeserialize = System.currentTimeMillis();
 
             return new ArrayList<>(Arrays.asList((endTimeSerialize-startTimeSerialize), (endTimeDeserialize-startTimeDeserialize)));
@@ -56,7 +60,7 @@ public class App
         ArrayList<Long> serializeTimes = new ArrayList<>();
         ArrayList<Long> deserializeTimes = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            ArrayList<Long> list = function("jsons/owners.json");
+            ArrayList<Long> list = function("jsons/owners_10_1000.json");
             serializeTimes.add(list.get(0));
             deserializeTimes.add(list.get(1));
         }

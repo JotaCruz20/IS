@@ -49,10 +49,11 @@ public class MessageBuffer {
             //Message Pack
             MessagePack msgpack = new MessagePack();
 
+            OutputStream outputStream = new FileOutputStream("outputs/message.bin");
+
             // Serialize
             long startTimeSerialize = System.currentTimeMillis();
             byte[] bytes = msgpack.write(owners);
-            OutputStream outputStream = new FileOutputStream("outputs/message.bin");
             outputStream.write(bytes);
             long endTimeSerialize = System.currentTimeMillis();
 
@@ -74,7 +75,7 @@ public class MessageBuffer {
         ArrayList<Long> serializeTimes = new ArrayList<>();
         ArrayList<Long> deserializeTimes = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            ArrayList<Long> list = function("jsons/owners.json");
+            ArrayList<Long> list = function("jsons/owners_10_1000.json");
             serializeTimes.add(list.get(0));
             deserializeTimes.add(list.get(1));
         }
