@@ -8,7 +8,7 @@
         <class>data.Users</class>
         <class>data.Client</class>
         <class>data.Manager</class>
-        <class>data.Trips</class>
+        <class>data.Bus</class>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/PostgresDS</jta-data-source>
         <properties>

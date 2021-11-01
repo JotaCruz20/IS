@@ -1,4 +1,5 @@
+data/Ticket.class
 data/Users.class
 data/Manager.class
-data/Trips.class
+data/Bus.class
 data/Client.class

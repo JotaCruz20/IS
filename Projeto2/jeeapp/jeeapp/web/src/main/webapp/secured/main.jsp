@@ -4,7 +4,7 @@
     <title>Title</title>
 </head>
 <body>
-<p>OLA</p>
+<p>OLA ${auth}</p>
 
 </body>
 </html>

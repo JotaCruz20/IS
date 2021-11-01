@@ -1,2 +1,3 @@
+filter/SecurityFilter.class
 servlet/Login.class
 servlet/Regist.class

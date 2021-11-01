@@ -36,7 +36,8 @@ public class Login extends HttpServlet {
         boolean b = manageClients.login(email, password);
 
         if(b){
-            req.getRequestDispatcher("/main.jsp").forward(req, resp);
+            req.getSession(true).setAttribute("auth", email);
+            req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);
         }
         else{
             req.getRequestDispatcher("/login.jsp").forward(req, resp);
