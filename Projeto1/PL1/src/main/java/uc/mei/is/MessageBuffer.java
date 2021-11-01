@@ -75,7 +75,7 @@ public class MessageBuffer {
         ArrayList<Long> serializeTimes = new ArrayList<>();
         ArrayList<Long> deserializeTimes = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            ArrayList<Long> list = function("jsons/owners_10_1000.json");
+            ArrayList<Long> list = function("jsons/owners_100000_10.json");
             serializeTimes.add(list.get(0));
             deserializeTimes.add(list.get(1));
         }
