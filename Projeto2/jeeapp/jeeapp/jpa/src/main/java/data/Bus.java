@@ -1,7 +1,9 @@
 package data;
 
+import javax.ejb.Local;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -14,14 +16,14 @@ public class Bus implements Serializable {
     private int id;
     private String departurePoint;
     private String destination;
-    private Date departureTime;
+    private LocalDateTime departureTime;
     private int capacity;
     private long price;
 
     @OneToMany(mappedBy = "bus")
     private List<Ticket> tickets;
 
-    public Bus(String departurePoint, String destination, Date departureTime, int capacity, long price) {
+    public Bus(String departurePoint, String destination, LocalDateTime departureTime, int capacity, long price) {
         this.departurePoint = departurePoint;
         this.destination = destination;
         this.departureTime = departureTime;
@@ -57,11 +59,11 @@ public class Bus implements Serializable {
         this.destination = destination;
     }
 
-    public Date getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Date departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 

@@ -31,15 +31,17 @@ public class Login extends HttpServlet {
         logger.info("Starting Login");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        logger.info("Email: "+email+" password: "+password);
+        logger.info("Email: " + email + " password: " + password);
 
-        boolean b = manageClients.login(email, password);
+        int b = manageClients.login(email, password);
 
-        if(b){
+        if (b==1) {
             req.getSession(true).setAttribute("auth", email);
             req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);
-        }
-        else{
+        }else if(b==2) {
+            req.getSession(true).setAttribute("auth", email);
+            req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
+        } else {
             req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }

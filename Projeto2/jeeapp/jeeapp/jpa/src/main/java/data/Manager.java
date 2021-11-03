@@ -12,4 +12,5 @@ public class Manager extends Users{
 
     public Manager() {
     }
+
 }

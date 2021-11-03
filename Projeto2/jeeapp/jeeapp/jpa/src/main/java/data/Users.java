@@ -20,6 +20,10 @@ public class Users implements Serializable {
         return email;
     }
 
+    public long getWallet() {
+        return -1;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
