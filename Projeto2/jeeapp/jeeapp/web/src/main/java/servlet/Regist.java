@@ -21,15 +21,6 @@ public class Regist extends HttpServlet {
     @EJB
     private IManageClients manageClients;
 
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//            throws IOException, ServletException {
-//        List<String> field1List = manageClients.listClients().stream().
-//                map(Manager::getName).collect(Collectors.toList());
-//        String result = "Manager list: " + field1List;
-//        System.out.println(result);
-//        response.getWriter().print(result);
-//    }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

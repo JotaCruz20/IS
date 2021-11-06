@@ -18,12 +18,12 @@ public class Bus implements Serializable {
     private String destination;
     private LocalDateTime departureTime;
     private int capacity;
-    private long price;
+    private double price;
 
-    @OneToMany(mappedBy = "bus")
+    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    public Bus(String departurePoint, String destination, LocalDateTime departureTime, int capacity, long price) {
+    public Bus(String departurePoint, String destination, LocalDateTime departureTime, int capacity, double price) {
         this.departurePoint = departurePoint;
         this.destination = destination;
         this.departureTime = departureTime;
@@ -75,11 +75,11 @@ public class Bus implements Serializable {
         this.capacity = capacity;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

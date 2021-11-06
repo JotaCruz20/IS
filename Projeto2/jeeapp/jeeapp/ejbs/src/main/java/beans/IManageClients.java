@@ -1,9 +1,11 @@
 package beans;
 
 import data.Client;
+import data.ClientDTO;
 import data.Manager;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 public interface IManageClients {
@@ -12,5 +14,11 @@ public interface IManageClients {
 
     public int login(String email, String password);
 
-    public void addTrip(String destination, String departure,String price, String capacity, String departureTime);
+    public List<Client> getClientInfoDebug();
+
+    public ClientDTO getClientInfo(String email);
+
+    public void updateInfo(String email,String name, String birthdate, String password) throws ParseException;
+
+    public void delete(String email);
 }

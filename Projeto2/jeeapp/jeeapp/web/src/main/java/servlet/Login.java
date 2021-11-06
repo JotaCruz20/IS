@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(Regist.class);
+    Logger logger = LoggerFactory.getLogger(Login.class);
     private static final long serialVersionUID = 1L;
     @EJB
     private IManageClients manageClients;
@@ -35,10 +35,10 @@ public class Login extends HttpServlet {
 
         int b = manageClients.login(email, password);
 
-        if (b==1) {
+        if (b == 1) {
             req.getSession(true).setAttribute("auth", email);
             req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);
-        }else if(b==2) {
+        } else if (b == 2) {
             req.getSession(true).setAttribute("auth", email);
             req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
         } else {

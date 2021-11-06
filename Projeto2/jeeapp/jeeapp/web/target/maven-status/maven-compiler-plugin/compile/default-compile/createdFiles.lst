@@ -1,3 +1,8 @@
-filter/SecurityFilter.class
+servlet/Delete.class
+servlet/Debug.class
 servlet/Login.class
+servlet/EditInformation.class
+servlet/Logout.class
+filter/SecurityFilter.class
+servlet/CreateTrip.class
 servlet/Regist.class

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.IManageClients;
+import beans.IManageTrips;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +19,9 @@ import org.slf4j.LoggerFactory;
 public class CreateTrip extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(Regist.class);
     private static final long serialVersionUID = 1L;
+
     @EJB
-    private IManageClients manageClients;
+    private IManageTrips manageTrips;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +32,7 @@ public class CreateTrip extends HttpServlet {
         String capacity = req.getParameter("capacity");
         String departureTime = req.getParameter("departureTime");
 
-        manageClients.addTrip(destination,departure,price,capacity,departureTime);
+        manageTrips.addTrip(destination,departure,price,capacity,departureTime);
 
         //How do i get the email in here
         //req.getSession(true).setAttribute("auth", email);
