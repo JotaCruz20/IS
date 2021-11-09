@@ -1,4 +1,5 @@
 servlet/Delete.class
+servlet/DeleteTrip.class
 servlet/Debug.class
 servlet/Login.class
 servlet/ChargeWallet.class

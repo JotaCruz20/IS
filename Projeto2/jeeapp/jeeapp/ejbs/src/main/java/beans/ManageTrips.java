@@ -47,4 +47,17 @@ public class ManageTrips implements IManageTrips {
         return tripDTOS;
     }
 
+    public List<BusDTO> getTrips(String startS) throws ParseException {
+        logger.info("Selecting bus trips from: "+startS);
+        Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.departureTime > :start", Bus.class).setParameter("start", start);
+        List<Bus> buses = q.getResultList();
+        List<BusDTO> tripDTOS = new ArrayList<>();
+        for (Bus bus:buses) {
+            tripDTOS.add(new BusDTO(bus.getId(),bus.getDeparturePoint(),bus.getDestination(),bus.getDepartureTime(),bus.getCapacity()));
+        }
+        return tripDTOS;
+    }
+
 }

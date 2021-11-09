@@ -24,6 +24,11 @@ public class CreateTrip extends HttpServlet {
     private IManageTrips manageTrips;
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/secured/createTrip.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("Creating bus trip Login");
         String destination = req.getParameter("destination");
@@ -34,8 +39,6 @@ public class CreateTrip extends HttpServlet {
 
         manageTrips.addTrip(destination,departure,price,capacity,departureTime);
 
-        //How do i get the email in here
-        //req.getSession(true).setAttribute("auth", email);
         req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
     }
 }

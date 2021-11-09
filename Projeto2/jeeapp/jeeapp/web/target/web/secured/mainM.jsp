@@ -4,10 +4,10 @@
   <title>Title</title>
 </head>
 <body>
-<p>OLA manager${auth}</p>
-<a href="">Create a new trip</a>
+<p>OLA manager ${auth}</p>
+<a href="<%= request.getContextPath() %>/createTrip">Create a new trip</a>
 <br>
-<a href="">Delete a future trip</a>
+<a href="<%= request.getContextPath() %>/deleteTrip">Delete a future trip</a>
 <br>
 <a href="">List top 5 passengers</a>
 <br>

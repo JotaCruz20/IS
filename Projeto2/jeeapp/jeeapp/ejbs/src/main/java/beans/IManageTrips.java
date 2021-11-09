@@ -10,4 +10,6 @@ public interface IManageTrips {
     public void addTrip(String destination, String departure,String price, String capacity, String departureTime);
 
     public List<BusDTO> getTrips(String start, String end) throws ParseException;
+
+    public List<BusDTO> getTrips(String start) throws ParseException;
 }

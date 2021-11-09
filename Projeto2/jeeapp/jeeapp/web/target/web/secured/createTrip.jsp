@@ -7,15 +7,15 @@
 <body>
 <p>Fill the form to create a trip:</p>
 <form action="<%= request.getContextPath() %>/createTrip" method="post">
-    Departure point: <input name="departure" type="password" placeholder="departure point..." />
+    Departure point: <input name="departure" type="text" placeholder="departure point..." />
     <br>
-    Departure time: <input name="departureTime" type="datetime">
+    Departure time: <input name="departureTime" type="datetime-local">
     <br>
     Destination: <input name="destination" type="text" placeholder="destination..." />
     <br>
-    Capacity: <input name="capacity" type="text" placeholder="capacity..." />
+    Capacity: <input name="capacity" type="number" placeholder="capacity..." />
     <br>
-    Price: <input name="price" type="text" placeholder="price..." />
+    Price: <input name="price" type="text" min="0.00" max="30.00" step="0.01 placeholder="price..." />
     <br>
     <input type="submit">
 </form>

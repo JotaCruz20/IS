@@ -1,16 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: asilva
-  Date: 03/11/2021
-  Time: 12:12
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Delete a Trip</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Delete</title>
 </head>
 <body>
-
+<c:forEach items="${trips}" var="trip">
+    <c:out value="Bus from ${trip.departurePoint} to ${trip.destination}, leaving at ${trip.departureTime}"/>
+    <form action="<%= request.getContextPath() %>/deleteTrip/${trip.id}" method="post">
+        <input type="submit" value="Delete this trip">
+    </form>
+</c:forEach>
 </body>
 </html>
