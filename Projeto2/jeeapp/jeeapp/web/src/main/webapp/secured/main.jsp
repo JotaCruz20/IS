@@ -7,9 +7,7 @@
 <p>OLA ${auth}</p>
 <a href="<%= request.getContextPath() %>/editInfo">Edit Personal Info</a>
 <br>
-<a href="">List All Available Trips</a>
-<br>
-<a href="">Charge my wallet</a>
+<a href="<%= request.getContextPath() %>/listTrips">List All Available Trips</a>
 <br>
 <a href="">List my Trips</a>
 <br>

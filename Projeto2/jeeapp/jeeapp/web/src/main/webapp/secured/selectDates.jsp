@@ -5,8 +5,8 @@
 </head>
 <body>
 <strong>Select Dates</strong>
-<form action="<%= request.getContextPath() %>/listTrips" method="post">
-    Beginning: <input name="beginning" type="date">
+<form action="<%= request.getContextPath() %>/listtrips" method="post">
+    Beginning: <input name="start" type="date">
     <br>
     End: <input name="end" type="date">
     <br>

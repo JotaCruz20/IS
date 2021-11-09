@@ -2,5 +2,6 @@
 /workspace/jpa/src/main/java/data/ClientDTO.java
 /workspace/jpa/src/main/java/data/Manager.java
 /workspace/jpa/src/main/java/data/Users.java
+/workspace/jpa/src/main/java/data/BusDTO.java
 /workspace/jpa/src/main/java/data/Ticket.java
 /workspace/jpa/src/main/java/data/Bus.java

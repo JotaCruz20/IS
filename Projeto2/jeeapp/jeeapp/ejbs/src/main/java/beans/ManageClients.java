@@ -81,14 +81,22 @@ public class ManageClients implements IManageClients {
         Client client = q.getSingleResult();
 
         logger.info("Date: "+ client.getBirthdate().toString().split(" ")[0]);
-        return new ClientDTO(client.getEmail(), client.getName(), client.getBirthdate().toString().split(" ")[0]);
+        return new ClientDTO(client.getEmail(), client.getName(), client.getBirthdate().toString().split(" ")[0], client.getWallet());
 
     }
 
 
-    public List<Client> getClientInfoDebug(){
+    public List<Client> getClientInfoDebug(){ //ISTO È SO DEBUG SO WTV QUE N ESTEJA EM DTO
         TypedQuery<Client> q = em.createQuery("from Client c", Client.class);
         return q.getResultList();
+    }
+
+    public void chargeWallet(String email, int money){
+        TypedQuery<Client> q = em.createQuery("from Client c " +
+                "where c.email= :email", Client.class).setParameter("email", email);
+        Client client = q.getSingleResult();
+        client.setWallet(client.getWallet()+money);
+        em.persist(client);
     }
 
 

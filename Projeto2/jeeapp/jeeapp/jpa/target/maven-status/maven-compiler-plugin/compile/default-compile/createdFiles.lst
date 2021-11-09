@@ -1,5 +1,6 @@
 data/Ticket.class
 data/Users.class
+data/BusDTO.class
 data/Manager.class
 data/Bus.class
 data/ClientDTO.class

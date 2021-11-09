@@ -6,6 +6,7 @@ public class ClientDTO {
     private String email;
     private String name;
     private String birthdate;
+    private long wallet;
 
     public String getEmail() {
         return email;
@@ -31,7 +32,16 @@ public class ClientDTO {
         this.birthdate = birthdate;
     }
 
-    public ClientDTO(String email, String name, String birthdate) {
+    public long getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(long wallet) {
+        this.wallet = wallet;
+    }
+
+    public ClientDTO(String email, String name, String birthdate, long wallet) {
+        this.wallet = wallet;
         this.email = email;
         this.name = name;
         this.birthdate = birthdate;

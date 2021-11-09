@@ -36,6 +36,7 @@ public class EditInformation extends HttpServlet {
         String birthdate = req.getParameter("birthdate");
         String email = (String) req.getSession().getAttribute("auth");
         String password = req.getParameter("password");
+        logger.info("Alterar informação do user: "+email);
 
         try {
             manageClients.updateInfo(email, name, birthdate, password);

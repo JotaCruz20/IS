@@ -6,9 +6,11 @@
     <title>EditInfo</title>
 </head>
 <body>
-<strong>Create Account</strong>
+<strong>Edit Account</strong>
 <form action="<%= request.getContextPath() %>/editInfo" method="post">
     Email: <input name="email" type="text" value="${client.email}"  disabled="disabled"/>
+    <br>
+    Wallet: <input name="wallet" type="text" value="${client.wallet}"  disabled="disabled"/>
     <br>
     Password: <input name="password" type="password"/>
     <br>
@@ -18,9 +20,15 @@
     <br>
     <input type="submit">
 </form>
-
+<br>
 <form action="<%= request.getContextPath() %>/delete" method="post">
-    <input type="submit" value="Deletar Conta">
+    <input type="submit" value="Delete Acount">
+</form>
+<br>
+<form action="<%= request.getContextPath() %>/chargeWallet" method="post">
+    Money to Charge: <input name="money" type="number"/>
+    <br>
+    <input type="submit" value="Charge Wallet">
 </form>
 </body>
 </html>

@@ -21,4 +21,6 @@ public interface IManageClients {
     public void updateInfo(String email,String name, String birthdate, String password) throws ParseException;
 
     public void delete(String email);
+
+    public void chargeWallet(String email, int money);
 }
