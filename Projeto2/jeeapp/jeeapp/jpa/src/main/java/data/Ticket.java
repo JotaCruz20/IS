@@ -2,6 +2,7 @@ package data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 public class Ticket implements Serializable {
@@ -9,11 +10,17 @@ public class Ticket implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
     private int id;
+
+    @Column
     private int place;
 
     @ManyToOne
     private Client client;
+
+    @Column
+    private Date buyDate;
 
     @ManyToOne
     private Bus bus;
@@ -50,9 +57,18 @@ public class Ticket implements Serializable {
         this.bus = bus;
     }
 
-    public Ticket(int place, Client client) {
+    public Date getBuyDate() {
+        return buyDate;
+    }
+
+    public void setBuyDate(Date buyDate) {
+        this.buyDate = buyDate;
+    }
+
+    public Ticket(int place, Client client, Date buyDate) {
         this.place = place;
         this.client = client;
+        this.buyDate = buyDate;
     }
 
     public Ticket(){

@@ -1,6 +1,7 @@
 package data;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Entity
 public class Client extends Users{
+    @Column
     private long wallet;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)

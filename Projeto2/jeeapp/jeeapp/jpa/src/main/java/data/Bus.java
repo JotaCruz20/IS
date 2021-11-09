@@ -13,11 +13,22 @@ public class Bus implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
     private int id;
+
+    @Column
     private String departurePoint;
+
+    @Column
     private String destination;
+
+    @Column
     private LocalDateTime departureTime;
+
+    @Column
     private int capacity;
+
+    @Column(precision = 2)
     private double price;
 
     @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)

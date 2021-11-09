@@ -20,11 +20,11 @@
     <br>
     <input type="submit">
 </form>
-
+<br>
 <form action="<%= request.getContextPath() %>/delete" method="post">
     <input type="submit" value="Delete Acount">
 </form>
-
+<br>
 <form action="<%= request.getContextPath() %>/chargeWallet" method="post">
     Money to Charge: <input name="money" type="number"/>
     <br>

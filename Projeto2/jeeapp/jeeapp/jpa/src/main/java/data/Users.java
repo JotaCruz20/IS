@@ -1,6 +1,9 @@
 package data;
 
 
+import org.hibernate.annotations.ColumnTransformer;
+
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -11,9 +14,17 @@ public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Column
     private String email;
+
+    @Column
     private String name;
+
+    @Column
+    @ColumnTransformer(read = "pgp_sym_decrypt(password::bytea, 'mySecretKey')", write = "pgp_sym_encrypt(?, 'mySecretKey')")
     private String password;
+
+    @Column
     private Date birthdate;
 
     public String getEmail() {
