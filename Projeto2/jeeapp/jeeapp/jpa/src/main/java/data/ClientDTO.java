@@ -46,4 +46,9 @@ public class ClientDTO {
         this.name = name;
         this.birthdate = birthdate;
     }
+
+    public ClientDTO(String email, String name) {
+        this.email = email;
+        this.name = name;
+    }
 }
