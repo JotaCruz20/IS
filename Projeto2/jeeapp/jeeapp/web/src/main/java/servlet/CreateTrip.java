@@ -37,7 +37,11 @@ public class CreateTrip extends HttpServlet {
         String capacity = req.getParameter("capacity");
         String departureTime = req.getParameter("departureTime");
 
-        manageTrips.addTrip(destination,departure,price,capacity,departureTime);
+        try {
+            manageTrips.addTrip(destination,departure,price,capacity,departureTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
     }

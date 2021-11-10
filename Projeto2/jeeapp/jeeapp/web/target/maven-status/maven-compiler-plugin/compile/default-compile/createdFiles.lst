@@ -7,5 +7,6 @@ servlet/EditInformation.class
 servlet/Logout.class
 servlet/ListTrips.class
 filter/SecurityFilter.class
+servlet/BuyTrip.class
 servlet/CreateTrip.class
 servlet/Regist.class
