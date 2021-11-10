@@ -47,11 +47,11 @@ public class ManageTrips implements IManageTrips {
         return tripDTOS;
     }
 
-    public List<BusDTO> getTrips(String startS) throws ParseException {
-        logger.info("Selecting bus trips from: "+startS);
-        Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
+    public List<BusDTO> getTrips(){
+        LocalDateTime now = LocalDateTime.now();
+        logger.info("Selecting bus trips from: "+now.toString());
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
-                "where b.departureTime > :start", Bus.class).setParameter("start", start);
+                "where b.departureTime > :start", Bus.class).setParameter("start", now);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus:buses) {
@@ -61,3 +61,4 @@ public class ManageTrips implements IManageTrips {
     }
 
 }
+

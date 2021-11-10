@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/deleteTrip")
 public class DeleteTrip extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(Regist.class);
+    Logger logger = LoggerFactory.getLogger(DeleteTrip.class);
     private static final long serialVersionUID = 1L;
 
     @EJB
@@ -29,28 +29,14 @@ public class DeleteTrip extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
-        Date date = new Date(System.currentTimeMillis());
-        try {
-            List<BusDTO> tripDTOS = manageTrips.getTrips(formatter.format(date));
-            req.getSession(true).setAttribute("trips",tripDTOS);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        List<BusDTO> tripDTOS = manageTrips.getTrips();
+        logger.info("Trips: "+ tripDTOS);
+        req.getSession(true).setAttribute("trips",tripDTOS);
         req.getRequestDispatcher("/secured/deleteTrip.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("Creating bus trip Login");
-        String destination = req.getParameter("destination");
-        String departure = req.getParameter("departure");
-        String price = req.getParameter("price");
-        String capacity = req.getParameter("capacity");
-        String departureTime = req.getParameter("departureTime");
-
-        manageTrips.addTrip(destination,departure,price,capacity,departureTime);
 
         req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
     }

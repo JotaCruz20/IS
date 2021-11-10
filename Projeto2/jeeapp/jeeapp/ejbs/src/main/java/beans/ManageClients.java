@@ -18,7 +18,7 @@ public class ManageClients implements IManageClients {
     @PersistenceContext(unitName = "projeto")
     EntityManager em;
 
-    public void addClient(String email, String password, String name, String birthdate) throws ParseException { //https://stackoverflow.com/questions/27667034/how-to-encrypt-password-using-spring-hibernate-in-java encriptar(?)
+    public void addClient(String email, String password, String name, String birthdate) throws ParseException {
         logger.info("Adding client ...");
         Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
         Client s = new Client(email, name, password, date1);
