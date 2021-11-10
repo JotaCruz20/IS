@@ -23,4 +23,6 @@ public interface IManageClients {
     public void delete(String email);
 
     public void chargeWallet(String email, int money);
+
+    public List<ClientDTO> getTopClients();
 }

@@ -99,5 +99,7 @@ public class ManageClients implements IManageClients {
         em.persist(client);
     }
 
+    public List<ClientDTO> getTopClients(){
 
+    }
 }
