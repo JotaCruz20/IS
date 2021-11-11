@@ -11,9 +11,9 @@
 <br>
 <a href="<%= request.getContextPath() %>/top5passenger">List top 5 passengers</a>
 <br>
-<a href="<%= request.getContextPath() %>/">List trips between two dates</a>
+<a href="<%= request.getContextPath() %>/listTripsManager">List trips between two dates</a>
 <br>
-<a href="">List trips occuring on a date</a>
+<a href="<%= request.getContextPath() %>/listTripsOnDateManager">List trips occuring on a date</a>
 <br>
 <a href="">Check revenues</a>
 <br>

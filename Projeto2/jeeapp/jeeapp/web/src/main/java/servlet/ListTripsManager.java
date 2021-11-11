@@ -16,12 +16,19 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-@WebServlet("/listTripsManager") //TODO: TESTAR ISTO
+@WebServlet("/listTripsManager")
 public class ListTripsManager extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(Delete.class);
     private static final long serialVersionUID = 1L;
     @EJB
     private IManageTrips manageTrips;
+
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Selecting Dates");
+        req.getRequestDispatcher("/secured/selectDatesManager.jsp").forward(req, resp);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,6 +39,7 @@ public class ListTripsManager extends HttpServlet {
 
         try {
             List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate);
+            logger.info("Trips selected: "+busDTOS);
             req.getSession(true).setAttribute("trips", busDTOS);
             req.getRequestDispatcher("/secured/listTripsManager.jsp").forward(req, resp);
         } catch (ParseException e) {

@@ -1,6 +1,7 @@
 package beans;
 
 import data.BusDTO;
+import data.ClientDTO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -18,4 +19,8 @@ public interface IManageTrips {
     public void buyTicket(String busId,String seat,String user);
 
     public List<BusDTO> getTripsUser(String email);
+
+    public List<ClientDTO> getTripsPassenger(int tripId);
+
+    public List<BusDTO> getTripsOnDate(String date) throws ParseException;
 }

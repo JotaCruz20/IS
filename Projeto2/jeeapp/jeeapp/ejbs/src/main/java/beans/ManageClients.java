@@ -101,7 +101,7 @@ public class ManageClients implements IManageClients {
     }
 
     public List<ClientDTO> getTopClients(){
-        //Query q = em.createQuery("select c.name,c.email, (select count(*) from Ticket t1 where t1.client=t.client) as amount  from Client c,Ticket t where c=t.client group by c.name,c.email order by amount desc,c.name asc");
+        Query q = em.createQuery("select c.name,c.email, (select count(*) from Ticket t1 where t1.client=t.client) as amount  from Client c,Ticket t where c=t.client group by c.name,c.email order by amount desc,c.name asc");
         q.setMaxResults(5);
         System.out.println(q.getResultList());
         List<ClientDTO> clientDTOS = new ArrayList<>();

@@ -1,9 +1,6 @@
 package beans;
 
-import data.Bus;
-import data.BusDTO;
-import data.Client;
-import data.Ticket;
+import data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +55,7 @@ public class ManageTrips implements IManageTrips {
         return tripDTOS;
     }
 
-    public List<BusDTO> getTripsUser(String email){
+    public List<BusDTO> getTripsUser(String email) {
         logger.info("Selecting bus trips from user: " + em);
         LocalDateTime now = LocalDateTime.now();
 
@@ -109,14 +106,14 @@ public class ManageTrips implements IManageTrips {
             availableSeats.add(i);
         }
         for (Ticket ticket : tickets) {
-            availableSeats.remove(ticket.getPlace()-1);
+            availableSeats.remove(ticket.getPlace() - 1);
         }
         return availableSeats;
     }
 
     public void buyTicket(String busId, String seat, String user) {
 
-        logger.info("Buying ticket for bus: "+busId+" in seat: "+seat+" for user: "+user);
+        logger.info("Buying ticket for bus: " + busId + " in seat: " + seat + " for user: " + user);
 
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
                 "where b.id = :id", Bus.class).setParameter("id", Integer.parseInt(busId));
@@ -126,11 +123,54 @@ public class ManageTrips implements IManageTrips {
                 "where c.email = :email", Client.class).setParameter("email", user);
         Client client = q1.getSingleResult();
 
-        client.setWallet((long) (client.getWallet()-bus.getPrice()));
+        client.setWallet((long) (client.getWallet() - bus.getPrice()));
         em.persist(client);
 
         Ticket ticket = new Ticket(Integer.parseInt(seat), client, LocalDateTime.now(), bus);
         em.persist(ticket);
+    }
+
+    public List<ClientDTO> getTripsPassenger(int tripId) {
+        int flag = 0;
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.id= :tripId", Bus.class).setParameter("tripId", tripId);
+        Bus bus = q.getSingleResult();
+
+        List<ClientDTO> clientDTOS = new ArrayList<>();
+        for (Ticket ticket : bus.getTickets()) {
+            ClientDTO c = new ClientDTO(ticket.getClient().getEmail(), ticket.getClient().getName());
+
+            for (ClientDTO cl : clientDTOS) {
+                if (c.getEmail() == cl.getEmail()) {
+                    flag = 1;
+                    break;
+                }
+            }
+
+            if (flag == 0) {
+                clientDTOS.add(c);
+            } else {
+                flag = 0;
+            }
+        }
+        return clientDTOS;
+    }
+
+    public List<BusDTO> getTripsOnDate(String date) throws ParseException {
+        logger.info("Selecting bus trips from: " + date);
+        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+
+        Instant instant = Instant.ofEpochMilli(date1.getTime());
+        LocalDateTime date2 = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.departureTime = :date ", Bus.class).setParameter("date", date2);
+        List<Bus> buses = q.getResultList();
+        List<BusDTO> tripDTOS = new ArrayList<>();
+        for (Bus bus : buses) {
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+        }
+        return tripDTOS;
     }
 }
 
