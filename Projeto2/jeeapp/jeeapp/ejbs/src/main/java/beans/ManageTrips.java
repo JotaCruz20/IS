@@ -2,6 +2,8 @@ package beans;
 
 import data.Bus;
 import data.BusDTO;
+import data.Client;
+import data.Ticket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +13,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +26,7 @@ public class ManageTrips implements IManageTrips {
     @PersistenceContext(unitName = "projeto")
     EntityManager em;
 
-    public void addTrip(String destination, String departure,String price, String capacity, String departureTime){
+    public void addTrip(String destination, String departure, String price, String capacity, String departureTime) {
         logger.info("Adding bus trip ...");
         logger.info("departure time: " + departureTime);
         LocalDateTime dateTime = LocalDateTime.parse(departureTime);
@@ -34,31 +38,99 @@ public class ManageTrips implements IManageTrips {
     }
 
     public List<BusDTO> getTrips(String startS, String endS) throws ParseException {
-        logger.info("Selecting bus trips from: "+startS+" to:"+endS);
+        logger.info("Selecting bus trips from: " + startS + " to:" + endS);
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endS);
+
+        Instant instant = Instant.ofEpochMilli(start.getTime());
+        LocalDateTime dateStart = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        Instant instantEnd = Instant.ofEpochMilli(end.getTime());
+        LocalDateTime dateEnd = LocalDateTime.ofInstant(instantEnd, ZoneOffset.UTC);
+
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
-                "where b.departureTime > :start and b.departureTime < :end", Bus.class).setParameter("start", start).setParameter("end",end);
+                "where b.departureTime >= :start and b.departureTime <= :end", Bus.class).setParameter("start", dateStart).setParameter("end", dateEnd);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
-        for (Bus bus:buses) {
-            tripDTOS.add(new BusDTO(bus.getId(),bus.getDeparturePoint(),bus.getDestination(),bus.getDepartureTime(),bus.getCapacity()));
+        for (Bus bus : buses) {
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
         }
         return tripDTOS;
     }
 
-    public List<BusDTO> getTrips(){
+    public List<BusDTO> getTripsUser(String email){
+        logger.info("Selecting bus trips from user: " + em);
         LocalDateTime now = LocalDateTime.now();
-        logger.info("Selecting bus trips from: "+now.toString());
+
+        TypedQuery<Client> q = em.createQuery("from Client c " +
+                "where c.email = :email", Client.class).setParameter("email", email);
+        Client client = q.getSingleResult();
+
+        TypedQuery<Ticket> q1 = em.createQuery("from Ticket t " +
+                "where t.client = :client", Ticket.class).setParameter("client", client);
+        List<Ticket> tickets = q1.getResultList();
+
+        List<BusDTO> tripDTOS = new ArrayList<>();
+        for (Ticket ticket : tickets) {
+            TypedQuery<Bus> q2 = em.createQuery("from Bus b " +
+                    "where b= :bus", Bus.class).setParameter("bus", ticket.getBus());
+            Bus bus = q2.getSingleResult();
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+        }
+        return tripDTOS;
+    }
+
+    public List<BusDTO> getTrips() {
+        LocalDateTime now = LocalDateTime.now();
+        logger.info("Selecting bus trips from: " + now.toString());
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
                 "where b.departureTime > :start", Bus.class).setParameter("start", now);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
-        for (Bus bus:buses) {
-            tripDTOS.add(new BusDTO(bus.getId(),bus.getDeparturePoint(),bus.getDestination(),bus.getDepartureTime(),bus.getCapacity()));
+        for (Bus bus : buses) {
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
         }
         return tripDTOS;
     }
 
+    public List<Integer> getSeats(int id) {
+        logger.info("Selecting bus seats from: " + id);
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.id = :id", Bus.class).setParameter("id", id);
+        Bus bus = q.getSingleResult();
+
+        TypedQuery<Ticket> q1 = em.createQuery("from Ticket t " +
+                "where t.bus = :bus", Ticket.class).setParameter("bus", bus);
+
+        List<Ticket> tickets = q1.getResultList();
+
+        List<Integer> availableSeats = new ArrayList<Integer>();
+        for (int i = 1; i < bus.getCapacity() + 1; i++) {
+            availableSeats.add(i);
+        }
+        for (Ticket ticket : tickets) {
+            availableSeats.remove(ticket.getPlace()-1);
+        }
+        return availableSeats;
+    }
+
+    public void buyTicket(String busId, String seat, String user) {
+
+        logger.info("Buying ticket for bus: "+busId+" in seat: "+seat+" for user: "+user);
+
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.id = :id", Bus.class).setParameter("id", Integer.parseInt(busId));
+        Bus bus = q.getSingleResult();
+
+        TypedQuery<Client> q1 = em.createQuery("from Client c " +
+                "where c.email = :email", Client.class).setParameter("email", user);
+        Client client = q1.getSingleResult();
+
+        client.setWallet((long) (client.getWallet()-bus.getPrice()));
+        em.persist(client);
+
+        Ticket ticket = new Ticket(Integer.parseInt(seat), client, LocalDateTime.now(), bus);
+        em.persist(ticket);
+    }
 }
 

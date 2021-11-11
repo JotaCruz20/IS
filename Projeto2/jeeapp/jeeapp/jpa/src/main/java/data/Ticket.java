@@ -2,6 +2,7 @@ package data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class Ticket implements Serializable {
     private Client client;
 
     @Column
-    private Date buyDate;
+    private LocalDateTime buyDate;
 
     @ManyToOne
     private Bus bus;
@@ -57,18 +58,19 @@ public class Ticket implements Serializable {
         this.bus = bus;
     }
 
-    public Date getBuyDate() {
+    public LocalDateTime getBuyDate() {
         return buyDate;
     }
 
-    public void setBuyDate(Date buyDate) {
+    public void setBuyDate(LocalDateTime buyDate) {
         this.buyDate = buyDate;
     }
 
-    public Ticket(int place, Client client, Date buyDate) {
+    public Ticket(int place, Client client, LocalDateTime buyDate, Bus bus) {
         this.place = place;
         this.client = client;
         this.buyDate = buyDate;
+        this.bus = bus;
     }
 
     public Ticket(){

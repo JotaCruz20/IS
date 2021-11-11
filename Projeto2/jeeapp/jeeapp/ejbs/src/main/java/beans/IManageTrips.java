@@ -12,4 +12,10 @@ public interface IManageTrips {
     public List<BusDTO> getTrips(String start, String end) throws ParseException;
 
     public List<BusDTO> getTrips();
+
+    public List<Integer> getSeats(int id);
+
+    public void buyTicket(String busId,String seat,String user);
+
+    public List<BusDTO> getTripsUser(String email);
 }

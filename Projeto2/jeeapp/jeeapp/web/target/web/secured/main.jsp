@@ -9,10 +9,9 @@
 <br>
 <a href="<%= request.getContextPath() %>/listTrips">List All Available Trips</a>
 <br>
-<a href="">List my Trips</a>
+<a href="<%= request.getContextPath() %>/seeTrips">List my Trips</a>
 <br>
 <a href="<%= request.getContextPath() %>/logout">Log Out</a>
 <br>
-<a href="">Delete Account</a>
 </body>
 </html>

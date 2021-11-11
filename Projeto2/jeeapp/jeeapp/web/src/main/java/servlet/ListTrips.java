@@ -23,6 +23,13 @@ public class ListTrips extends HttpServlet {
     @EJB
     private IManageTrips manageTrips;
 
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Selecting Dates");
+        req.getRequestDispatcher("/secured/selectDates.jsp").forward(req, resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("Selecting trips");
@@ -32,6 +39,7 @@ public class ListTrips extends HttpServlet {
 
         try {
             List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate);
+            logger.info("Trips selected: "+busDTOS);
             req.getSession(true).setAttribute("trips", busDTOS);
             req.getRequestDispatcher("/secured/listTrips.jsp").forward(req, resp);
         } catch (ParseException e) {

@@ -1,12 +1,13 @@
 servlet/Delete.class
+servlet/SeeTrips.class
+servlet/ChargeWallet.class
+servlet/Logout.class
+filter/SecurityFilter.class
+servlet/BuyTrip.class
 servlet/DeleteTrip.class
 servlet/Debug.class
 servlet/Login.class
-servlet/ChargeWallet.class
 servlet/EditInformation.class
-servlet/Logout.class
 servlet/ListTrips.class
-filter/SecurityFilter.class
-servlet/BuyTrip.class
 servlet/CreateTrip.class
 servlet/Regist.class
