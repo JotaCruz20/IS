@@ -9,9 +9,9 @@
 <br>
 <a href="<%= request.getContextPath() %>/deleteTrip">Delete a future trip</a>
 <br>
-<a href="">List top 5 passengers</a>
+<a href="<%= request.getContextPath() %>/top5passenger">List top 5 passengers</a>
 <br>
-<a href="">List trips between two dates</a>
+<a href="<%= request.getContextPath() %>/">List trips between two dates</a>
 <br>
 <a href="">List trips occuring on a date</a>
 <br>
