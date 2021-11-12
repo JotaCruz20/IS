@@ -14,15 +14,15 @@ public interface IManageClients {
 
     public int login(String email, String password);
 
-    public List<Client> getClientInfoDebug();
-
     public ClientDTO getClientInfo(String email);
 
     public void updateInfo(String email,String name, String birthdate, String password) throws ParseException;
 
     public void delete(String email);
 
-    public void chargeWallet(String email, int money);
+    public void chargeWallet(String email, double money);
 
     public List<ClientDTO> getTopClients();
+
+    public boolean checkWallet(String busId, String email);
 }

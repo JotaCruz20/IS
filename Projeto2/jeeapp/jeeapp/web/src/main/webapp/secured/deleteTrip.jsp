@@ -10,9 +10,19 @@
 <c:forEach items="${trips}" var="trip">
     <c:out value="Bus from ${trip.departurePoint} to ${trip.destination}, leaving at ${trip.departureTime}"/>
     <form action="<%= request.getContextPath() %>/deleteTrip" method="post">
-        <input type="hidden" name="tripId" value="${trip.id}"/>
+        <input type="text" value="${trip.id}" name="tripId" hidden="hidden">
         <input type="submit" value="Delete this trip">
     </form>
 </c:forEach>
+<br>
+<button onclick="goBack()">Go Back</button>
+<br>
+<br>
+<a href="<%= request.getContextPath() %>/logout">Log Out</a>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

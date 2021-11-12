@@ -40,7 +40,7 @@ public class Regist extends HttpServlet {
         try {
             manageClients.addClient(email, password, name, birthdate);
             req.getSession(true).setAttribute("auth",email);
-            req.getRequestDispatcher("/main.jsp").forward(req,resp);
+            req.getRequestDispatcher("/secured/main.jsp").forward(req,resp);
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (ServletException e) {

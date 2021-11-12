@@ -1,7 +1,6 @@
 package servlet;
 
 import beans.IManageClients;
-import beans.IManageTrips;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class ChargeWallet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("Charging wallet");
         String email = (String) req.getSession().getAttribute("auth");
-        int money = Integer.parseInt(req.getParameter("money"));
+        double money = Double.parseDouble(req.getParameter("money"));
 
         manageClients.chargeWallet(email, money);
         req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);

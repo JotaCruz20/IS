@@ -20,9 +20,11 @@ public interface IManageTrips {
 
     public List<BusDTO> getTripsUser(String email);
 
-    public List<ClientDTO> getTripsPassenger(int tripId);
+    public void returnTicket(String busId, String user, String ticketId);
 
-    public List<BusDTO> getTripsOnDate(String date) throws ParseException;
+    public List<BusDTO> getTripsOnDate(String startS) throws ParseException;
 
     public void deleteTrip(String tripId);
+
+    public List<ClientDTO> getTripsPassenger(int tripId);
 }

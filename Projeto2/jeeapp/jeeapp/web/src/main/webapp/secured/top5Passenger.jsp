@@ -11,6 +11,16 @@
 <c:forEach items="${clients}" var="client" varstatus="loop">
   <c:out value="${loop.count} ${client.name}"/>
 </c:forEach>
-<a href="mainM.jsp">Go back</a>
+<br>
+<button onclick="goBack()">Go Back</button>
+<br>
+<br>
+<a href="<%= request.getContextPath() %>/logout">Log Out</a>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
 </body>
 </html>

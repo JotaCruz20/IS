@@ -9,17 +9,17 @@ import java.util.List;
 
 @Entity
 public class Client extends Users{
-    @Column
-    private long wallet;
+    @Column(precision = 3)
+    private double wallet;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Ticket> tickets;
 
-    public long getWallet() {
+    public double getWallet() {
         return wallet;
     }
 
-    public void setWallet(long wallet) {
+    public void setWallet(double wallet) {
         this.wallet = wallet;
     }
 
@@ -33,7 +33,7 @@ public class Client extends Users{
 
     public Client(String email, String name, String password, Date birthdate) {
         super(email, name, password, birthdate);
-        this.wallet = 0;
+        this.wallet = 0.0;
     }
 
     public Client(){

@@ -6,9 +6,10 @@ public class BusDTO {
     private int id;
     private String departurePoint;
     private String destination;
-    private LocalDateTime departureTime;
+    private String departureTime;
     private int capacity;
     private int place;
+    private int ticketId;
 
     public int getId() {
         return id;
@@ -16,6 +17,14 @@ public class BusDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getDeparturePoint() {
@@ -34,11 +43,11 @@ public class BusDTO {
         this.destination = destination;
     }
 
-    public LocalDateTime getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDateTime departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -58,7 +67,7 @@ public class BusDTO {
         this.place = place;
     }
 
-    public BusDTO(int id,String departurePoint, String destination, LocalDateTime departureTime, int capacity) {
+    public BusDTO(int id,String departurePoint, String destination, String departureTime, int capacity) {
         this.id = id;
         this.departurePoint = departurePoint;
         this.destination = destination;
@@ -66,12 +75,14 @@ public class BusDTO {
         this.capacity = capacity;
     }
 
-    public BusDTO(int id,String departurePoint, String destination, LocalDateTime departureTime, int capacity, int place) {
+
+    public BusDTO(int id,String departurePoint, String destination, String departureTime, int capacity, int place, int ticketId) {
         this.id = id;
         this.departurePoint = departurePoint;
         this.destination = destination;
         this.departureTime = departureTime;
         this.capacity = capacity;
         this.place = place;
+        this.ticketId = ticketId;
     }
 }

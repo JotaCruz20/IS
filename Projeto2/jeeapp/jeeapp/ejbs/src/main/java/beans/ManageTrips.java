@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +39,7 @@ public class ManageTrips implements IManageTrips {
 
     public List<BusDTO> getTrips(String startS, String endS) throws ParseException {
         logger.info("Selecting bus trips from: " + startS + " to:" + endS);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
         Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endS);
 
@@ -52,7 +54,7 @@ public class ManageTrips implements IManageTrips {
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus : buses) {
-            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime().format(formatter), bus.getCapacity()));
         }
         return tripDTOS;
     }
@@ -60,6 +62,7 @@ public class ManageTrips implements IManageTrips {
     public List<BusDTO> getTripsUser(String email) {
         logger.info("Selecting bus trips from user: " + em);
         LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email = :email", Client.class).setParameter("email", email);
@@ -72,22 +75,23 @@ public class ManageTrips implements IManageTrips {
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Ticket ticket : tickets) {
             TypedQuery<Bus> q2 = em.createQuery("from Bus b " +
-                    "where b= :bus", Bus.class).setParameter("bus", ticket.getBus());
+                    "where b= :bus and b.departureTime > :now", Bus.class).setParameter("bus", ticket.getBus()).setParameter("now", now);
             Bus bus = q2.getSingleResult();
-            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime().format(formatter), bus.getCapacity(), ticket.getPlace(), ticket.getId()));
         }
         return tripDTOS;
     }
 
     public List<BusDTO> getTrips() {
         LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         logger.info("Selecting bus trips from: " + now.toString());
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
                 "where b.departureTime > :start", Bus.class).setParameter("start", now);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus : buses) {
-            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime().format(formatter), bus.getCapacity()));
         }
         return tripDTOS;
     }
@@ -162,6 +166,8 @@ public class ManageTrips implements IManageTrips {
         logger.info("Selecting bus trips from: " + startS + " to next day");
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         c.setTime(sdf.parse(startS));
@@ -181,27 +187,50 @@ public class ManageTrips implements IManageTrips {
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus : buses) {
             logger.info(bus.getId() + " " + bus.getDepartureTime());
-            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
+            tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime().format(formatter), bus.getCapacity()));
         }
         return tripDTOS;
     }
 
-    public void deleteTrip(String tripId){
-        logger.info("deleting trip: " +tripId);
+    public void deleteTrip(String tripId) {
+        logger.info("deleting trip: " + tripId);
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
                 "where b.id = :tripId", Bus.class).setParameter("tripId", Integer.parseInt(tripId));
         Bus bus = q.getSingleResult();
-        logger.info("completed querie for trip: " +tripId);
+        logger.info("completed querie for trip: " + tripId);
 
-        List<Ticket> tickets= bus.getTickets();
+        List<Ticket> tickets = bus.getTickets();
 
-        for(Ticket ticket:tickets){
+        for (Ticket ticket : tickets) {
             Client client = ticket.getClient();
-            client.setWallet((long) (client.getWallet()+ bus.getPrice()));
+            client.setWallet((long) (client.getWallet() + bus.getPrice()));
         }
 
         em.remove(bus);
-        logger.info("deleted trip: " +tripId);
+        logger.info("deleted trip: " + tripId);
+    }
+
+
+
+    public void returnTicket(String busId, String user, String ticketId) {
+
+        logger.info("Returning ticket for bus: "+busId+ "for user: "+user);
+
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.id = :id", Bus.class).setParameter("id", Integer.parseInt(busId));
+        Bus bus = q.getSingleResult();
+
+        TypedQuery<Client> q1 = em.createQuery("from Client c " +
+                "where c.email = :email", Client.class).setParameter("email", user);
+        Client client = q1.getSingleResult();
+
+        client.setWallet((long) (client.getWallet()+bus.getPrice()));
+        em.persist(client);
+
+        TypedQuery<Ticket> q2 = em.createQuery("from Ticket t " +
+                "where t.id = :id", Ticket.class).setParameter("id", Integer.parseInt(ticketId));
+        Ticket ticket = q2.getSingleResult();
+        em.remove(ticket);
     }
 }
 

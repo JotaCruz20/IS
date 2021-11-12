@@ -11,5 +11,16 @@
     <input type="submit">
 </form>
 
+<br>
+<button onclick="goBack()">Go Back</button>
+<br>
+<br>
+<a href="<%= request.getContextPath() %>/logout">Log Out</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>

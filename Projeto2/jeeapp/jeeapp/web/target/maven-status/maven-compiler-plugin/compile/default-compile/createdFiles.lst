@@ -1,7 +1,9 @@
 servlet/Delete.class
+servlet/GoToMain.class
 servlet/Top5Passenger.class
 servlet/SeeTrips.class
 servlet/ChargeWallet.class
+servlet/ReturnTrips.class
 servlet/TripsPassengers.class
 servlet/ListTripsOnDateManager.class
 servlet/Logout.class
@@ -9,7 +11,6 @@ filter/SecurityFilter.class
 servlet/BuyTrip.class
 servlet/DeleteTrip.class
 servlet/ListTripsManager.class
-servlet/Debug.class
 servlet/Login.class
 servlet/EditInformation.class
 servlet/ListTrips.class

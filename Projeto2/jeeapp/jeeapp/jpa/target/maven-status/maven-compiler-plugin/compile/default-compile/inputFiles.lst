@@ -1,7 +1,7 @@
-/workspace/jpa/src/main/java/data/Client.java
-/workspace/jpa/src/main/java/data/ClientDTO.java
-/workspace/jpa/src/main/java/data/Manager.java
-/workspace/jpa/src/main/java/data/Users.java
-/workspace/jpa/src/main/java/data/BusDTO.java
-/workspace/jpa/src/main/java/data/Ticket.java
-/workspace/jpa/src/main/java/data/Bus.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/Ticket.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/ClientDTO.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/Manager.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/Bus.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/BusDTO.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/Users.java
+/workspace/jeeapp/jeeapp/jpa/src/main/java/data/Client.java

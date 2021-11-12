@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-@WebServlet("/listTrips") //TODO: TESTAR ISTO
+@WebServlet("/listTrips")
 public class ListTrips extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(Delete.class);
     private static final long serialVersionUID = 1L;
@@ -38,10 +38,10 @@ public class ListTrips extends HttpServlet {
 
 
         try {
-            List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate);
+            List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate); //TODO: MUDAR O FORMATO DA DATA
             logger.info("Trips selected: "+busDTOS);
             req.getSession(true).setAttribute("trips", busDTOS);
-            req.getRequestDispatcher("/secured/listTrips.jsp").forward(req, resp);
+            req.getRequestDispatcher("/secured/availableTrips.jsp").forward(req, resp);
         } catch (ParseException e) {
             e.printStackTrace();
         }

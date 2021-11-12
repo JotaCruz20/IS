@@ -1,5 +1,6 @@
 package servlet;
 
+import beans.IManageClients;
 import beans.IManageTrips;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +16,13 @@ import java.util.List;
 
 @WebServlet("/buyTrip")
 public class BuyTrip extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(ChargeWallet.class);
+    Logger logger = LoggerFactory.getLogger(BuyTrip.class);
     private static final long serialVersionUID = 1L;
 
     @EJB
     private IManageTrips manageTrips;
+    @EJB
+    private IManageClients manageClients;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,14 +37,21 @@ public class BuyTrip extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {//TODO: NAO PERMITIR CASO NAO TENHA DINHEIRO
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String busId = (String) req.getSession(true).getAttribute("tripSelected");
         String user = (String) req.getSession(true).getAttribute("auth");
         String seat = req.getParameter("seat");
 
-        logger.info("Buying trip:" + busId+" for user: "+ user+" in seat: "+seat);
+        if(!manageClients.checkWallet(busId,user)){
+            logger.info("User: " + user + " doesn't have enough money for this trip");
+            req.setAttribute("error","Not enough money!");
+            req.getRequestDispatcher("/secured/errors.jsp").forward(req, resp);
+        }
+        else {
+            logger.info("Buying trip:" + busId + " for user: " + user + " in seat: " + seat);
 
-        manageTrips.buyTicket(busId, seat, user);
-        req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);
+            manageTrips.buyTicket(busId, seat, user);
+            req.getRequestDispatcher("/secured/main.jsp").forward(req, resp);
+        }
     }
 }

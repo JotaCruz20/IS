@@ -47,7 +47,7 @@ public class ManageClients implements IManageClients {
         return -1;
     }
 
-    public void updateInfo(String email,String name, String birthdate, String password) throws ParseException {
+    public void updateInfo(String email, String name, String birthdate, String password) throws ParseException {
         Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
 
         TypedQuery<Client> q = em.createQuery("from Client c " +
@@ -55,7 +55,9 @@ public class ManageClients implements IManageClients {
         Client client = q.getSingleResult();
         client.setName(name);
         client.setBirthdate(date1);
-        client.setPassword(password);
+        if(!password.equals("")) {
+            client.setPassword(password);
+        }
         em.persist(client);
 
     }
@@ -87,16 +89,11 @@ public class ManageClients implements IManageClients {
     }
 
 
-    public List<Client> getClientInfoDebug(){ //ISTO È SO DEBUG SO WTV QUE N ESTEJA EM DTO
-        TypedQuery<Client> q = em.createQuery("from Client c", Client.class);
-        return q.getResultList();
-    }
-
-    public void chargeWallet(String email, int money){
+    public void chargeWallet(String email, double money) {
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email= :email", Client.class).setParameter("email", email);
         Client client = q.getSingleResult();
-        client.setWallet(client.getWallet()+money);
+        client.setWallet(client.getWallet() + money);
         em.persist(client);
     }
 
@@ -109,5 +106,18 @@ public class ManageClients implements IManageClients {
             clientDTOS.add(new ClientDTO(client.getName(),client.getEmail()));
         }*/
         return clientDTOS;
+    }
+
+    public boolean checkWallet(String busId, String email) {
+        TypedQuery<Client> q = em.createQuery("from Client c " +
+                "where c.email= :email", Client.class).setParameter("email", email);
+
+        TypedQuery<Bus> q1 = em.createQuery("from Bus b " +
+                "where b.id= :bus", Bus.class).setParameter("bus", Integer.parseInt(busId));
+
+        Client client = q.getSingleResult();
+        Bus bus = q1.getSingleResult();
+
+        return client.getWallet() > bus.getPrice();
     }
 }

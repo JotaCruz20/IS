@@ -14,5 +14,16 @@
         <input type="submit" value="Check passengers in this trip">
     </form>
 </c:forEach>
+<br>
+<button onclick="goBack()">Go Back</button>
+<br>
+<br>
+<a href="<%= request.getContextPath() %>/logout">Log Out</a>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>
