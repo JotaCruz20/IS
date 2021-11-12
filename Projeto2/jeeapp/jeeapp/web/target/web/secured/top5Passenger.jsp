@@ -8,8 +8,9 @@
 </head>
 <body>
 <p>Top 5 users:</p>
-<c:forEach items="${clients}" var="client" varstatus="loop">
-  <c:out value="${loop.count} ${client.name}"/>
+<c:forEach items="${clients}" var="client" varStatus="loop">
+  <c:out value="${loop.count}.${client.name}"/>
+  <br>
 </c:forEach>
 <br>
 <button onclick="goBack()">Go Back</button>
