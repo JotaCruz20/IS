@@ -1,11 +1,19 @@
 package beans;
 
 import data.*;
-import org.hibernate.type.LocalDateTimeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -26,6 +34,9 @@ public class ManageTrips implements IManageTrips {
     @PersistenceContext(unitName = "projeto")
     EntityManager em;
 
+    @Resource(mappedName="java:jboss/mail/Default")
+    private Session session;
+
     public void addTrip(String destination, String departure, String price, String capacity, String departureTime) {
         logger.info("Adding bus trip ...");
         logger.info("departure time: " + departureTime);
@@ -35,6 +46,8 @@ public class ManageTrips implements IManageTrips {
         int capacityI = Integer.parseInt(capacity);
         Bus bus = new Bus(departure, destination, dateTime, capacityI, priceD);
         em.persist(bus);
+
+
     }
 
     public List<BusDTO> getTrips(String startS, String endS) throws ParseException {
@@ -56,6 +69,7 @@ public class ManageTrips implements IManageTrips {
         for (Bus bus : buses) {
             tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime().format(formatter), bus.getCapacity()));
         }
+
         return tripDTOS;
     }
 
@@ -204,6 +218,18 @@ public class ManageTrips implements IManageTrips {
         for (Ticket ticket : tickets) {
             Client client = ticket.getClient();
             client.setWallet((long) (client.getWallet() + bus.getPrice()));
+            try {
+
+                Message message = new MimeMessage(session);
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(client.getEmail()));
+                message.setSubject("Trip Deleted");
+                message.setText("Trip: "+bus.getDeparturePoint()+" to: "+bus.getDestination()+" was deleted by a manager!\n" +
+                        "You will be refunded");
+                Transport.send(message);
+
+            } catch (MessagingException e) {
+                logger.info("Falha ao enviar email: "+e.toString());
+            }
         }
 
         em.remove(bus);
