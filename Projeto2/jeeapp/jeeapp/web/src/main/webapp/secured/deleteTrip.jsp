@@ -9,7 +9,8 @@
 <body>
 <c:forEach items="${trips}" var="trip">
     <c:out value="Bus from ${trip.departurePoint} to ${trip.destination}, leaving at ${trip.departureTime}"/>
-    <form action="<%= request.getContextPath() %>/deleteTrip/${trip.id}" method="post">
+    <form action="<%= request.getContextPath() %>/deleteTrip" method="post">
+        <input type="hidden" name="tripId" value="${trip.id}"/>
         <input type="submit" value="Delete this trip">
     </form>
 </c:forEach>

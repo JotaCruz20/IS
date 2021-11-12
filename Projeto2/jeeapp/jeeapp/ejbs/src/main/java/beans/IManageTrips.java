@@ -23,4 +23,6 @@ public interface IManageTrips {
     public List<ClientDTO> getTripsPassenger(int tripId);
 
     public List<BusDTO> getTripsOnDate(String date) throws ParseException;
+
+    public void deleteTrip(String tripId);
 }

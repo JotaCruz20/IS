@@ -37,7 +37,8 @@ public class DeleteTrip extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String tripId = req.getParameter("tripId");
+        manageTrips.deleteTrip(tripId);
         req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
     }
 }

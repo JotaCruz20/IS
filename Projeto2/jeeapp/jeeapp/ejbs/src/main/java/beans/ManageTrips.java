@@ -185,5 +185,23 @@ public class ManageTrips implements IManageTrips {
         }
         return tripDTOS;
     }
+
+    public void deleteTrip(String tripId){
+        logger.info("deleting trip: " +tripId);
+        TypedQuery<Bus> q = em.createQuery("from Bus b " +
+                "where b.id = :tripId", Bus.class).setParameter("tripId", Integer.parseInt(tripId));
+        Bus bus = q.getSingleResult();
+        logger.info("completed querie for trip: " +tripId);
+
+        List<Ticket> tickets= bus.getTickets();
+
+        for(Ticket ticket:tickets){
+            Client client = ticket.getClient();
+            client.setWallet((long) (client.getWallet()+ bus.getPrice()));
+        }
+
+        em.remove(bus);
+        logger.info("deleted trip: " +tripId);
+    }
 }
 
