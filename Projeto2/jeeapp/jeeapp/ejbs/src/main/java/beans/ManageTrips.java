@@ -1,6 +1,7 @@
 package beans;
 
 import data.*;
+import org.hibernate.type.LocalDateTimeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -156,18 +158,29 @@ public class ManageTrips implements IManageTrips {
         return clientDTOS;
     }
 
-    public List<BusDTO> getTripsOnDate(String date) throws ParseException {
-        logger.info("Selecting bus trips from: " + date);
-        Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+    public List<BusDTO> getTripsOnDate(String startS) throws ParseException {
+        logger.info("Selecting bus trips from: " + startS + " to next day");
+        Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
 
-        Instant instant = Instant.ofEpochMilli(date1.getTime());
-        LocalDateTime date2 = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(startS));
+        c.add(Calendar.DATE, 1);  // number of days to add
+        String endS = sdf.format(c.getTime());  //
+        Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endS);
+
+        Instant instant = Instant.ofEpochMilli(start.getTime());
+        LocalDateTime dateStart = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+        Instant instantEnd = Instant.ofEpochMilli(end.getTime());
+        LocalDateTime dateEnd = LocalDateTime.ofInstant(instantEnd, ZoneOffset.UTC);
 
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
-                "where b.departureTime = :date ", Bus.class).setParameter("date", date2);
+                "where b.departureTime >= :start and b.departureTime < :end", Bus.class).setParameter("start", dateStart).setParameter("end", dateEnd);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus : buses) {
+            logger.info(bus.getId() + " " + bus.getDepartureTime());
             tripDTOS.add(new BusDTO(bus.getId(), bus.getDeparturePoint(), bus.getDestination(), bus.getDepartureTime(), bus.getCapacity()));
         }
         return tripDTOS;
