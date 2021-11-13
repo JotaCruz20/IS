@@ -6,7 +6,7 @@
     <title>Login</title>
 </head>
 <body>
-<strong>Create Account</strong>
+<strong>Login</strong>
 <form action="<%= request.getContextPath() %>/login" method="post">
     Email: <input name="email" type="text" placeholder="email..." />
     <br>

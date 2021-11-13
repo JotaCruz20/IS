@@ -56,7 +56,13 @@ public class ManageTrips implements IManageTrips {
         logger.info("Selecting bus trips from: " + startS + " to:" + endS);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startS);
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endS);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(sdf.parse(endS));
+        c.add(Calendar.DATE, 1);  // number of days to add
+        String endS1 = sdf.format(c.getTime());  //
+        Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endS1);
 
         Instant instant = Instant.ofEpochMilli(start.getTime());
         LocalDateTime dateStart = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
@@ -65,7 +71,7 @@ public class ManageTrips implements IManageTrips {
         LocalDateTime dateEnd = LocalDateTime.ofInstant(instantEnd, ZoneOffset.UTC);
 
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
-                "where b.departureTime >= :start and b.departureTime <= :end", Bus.class).setParameter("start", dateStart).setParameter("end", dateEnd);
+                "where b.departureTime >= :start and b.departureTime < :end", Bus.class).setParameter("start", dateStart).setParameter("end", dateEnd);
         List<Bus> buses = q.getResultList();
         List<BusDTO> tripDTOS = new ArrayList<>();
         for (Bus bus : buses) {
@@ -318,4 +324,5 @@ public class ManageTrips implements IManageTrips {
             }
         }
     }
+}
 

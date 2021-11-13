@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<c:out value="Erro: ${error}"/>
+<c:out value="Error: ${error}"/>
 <a href='main'>
     <button class="GFG">
         Go to main page

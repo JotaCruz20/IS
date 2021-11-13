@@ -5,13 +5,38 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Trip's Passengers</title>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
 </head>
 <body>
 <p>Trips Passengers:</p>
-<c:forEach items="${clients}" var="client">
-  <c:out value=" ${client.name} ${client.email}"/>
-  <br>
-</c:forEach>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+  </tr>
+  <c:forEach items="${clients}" var="client">
+    <tr>
+      <td>${client.name}</td>
+      <td>${client.email}</td>
+    </tr>
+  </c:forEach>
+</table>
 <br>
 <button onclick="goBack()">Go Back</button>
 <br>

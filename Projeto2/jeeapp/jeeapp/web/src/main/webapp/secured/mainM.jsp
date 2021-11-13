@@ -15,8 +15,6 @@
 <br>
 <a href="<%= request.getContextPath() %>/listTripsOnDateManager">List trips occuring on a date</a>
 <br>
-<a href="">Check revenues</a>
-<br>
 
 </body>
 </html>
