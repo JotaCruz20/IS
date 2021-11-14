@@ -9,6 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface IManageRevenue {
-    public void sendDailyRevenue(String tripId) throws ParseException;
+    public void sendDailyRevenue() throws ParseException;
 
 }

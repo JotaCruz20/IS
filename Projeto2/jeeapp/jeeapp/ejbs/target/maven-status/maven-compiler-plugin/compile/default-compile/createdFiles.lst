@@ -1,4 +1,6 @@
 beans/IManageClients.class
+beans/ManageRevenue.class
 beans/IManageTrips.class
 beans/ManageTrips.class
+beans/IManageRevenue.class
 beans/ManageClients.class

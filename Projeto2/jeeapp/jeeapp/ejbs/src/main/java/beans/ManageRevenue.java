@@ -40,8 +40,8 @@ public class ManageRevenue implements IManageRevenue {
     @Resource(mappedName = "java:jboss/mail/Default")
     private Session session;
 
-    @Schedule(dayOfWeek = "*",hour = "21", minute = "24")
-    public void sendDailyRevenue(String tripId) throws ParseException {
+    @Schedule(dayOfWeek = "*",hour = "18", minute = "26")
+    public void sendDailyRevenue() throws ParseException {
         logger.info("getting today's date");
 
         LocalDate todayL = java.time.LocalDate.now();
