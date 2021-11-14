@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -40,7 +39,7 @@ public class ManageRevenue implements IManageRevenue {
     @Resource(mappedName = "java:jboss/mail/Default")
     private Session session;
 
-    @Schedule(dayOfWeek = "*",hour = "18", minute = "26")
+    @Schedule(dayOfWeek = "*",hour = "18", minute = "36")
     public void sendDailyRevenue() throws ParseException {
         logger.info("getting today's date");
 
@@ -90,7 +89,7 @@ public class ManageRevenue implements IManageRevenue {
                 message.setSubject("Daily Revenue");
                 message.setText("Daily Revenue:\n"
                         + "\tTickets sold today: " + numberOfTickets
-                        + "\tTotal Money:" + totalRevenue);
+                        + "\n\tTotal Money:" + totalRevenue);
                 Transport.send(message);
 
             } catch (MessagingException e) {

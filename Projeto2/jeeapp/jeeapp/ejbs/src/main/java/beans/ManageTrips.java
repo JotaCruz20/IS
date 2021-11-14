@@ -48,8 +48,6 @@ public class ManageTrips implements IManageTrips {
         int capacityI = Integer.parseInt(capacity);
         Bus bus = new Bus(departure, destination, dateTime, capacityI, priceD);
         em.persist(bus);
-
-
     }
 
     public List<BusDTO> getTrips(String startS, String endS) throws ParseException {
