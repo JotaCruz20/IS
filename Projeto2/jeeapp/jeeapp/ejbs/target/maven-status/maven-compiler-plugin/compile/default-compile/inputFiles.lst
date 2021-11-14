@@ -1,4 +1,6 @@
 /workspace/ejbs/src/main/java/beans/ManageClients.java
+/workspace/ejbs/src/main/java/beans/ManageRevenue.java
+/workspace/ejbs/src/main/java/beans/IManageRevenue.java
 /workspace/ejbs/src/main/java/beans/IManageClients.java
 /workspace/ejbs/src/main/java/beans/IManageTrips.java
 /workspace/ejbs/src/main/java/beans/ManageTrips.java

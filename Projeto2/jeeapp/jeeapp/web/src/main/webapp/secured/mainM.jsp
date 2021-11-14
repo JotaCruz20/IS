@@ -15,6 +15,7 @@
 <br>
 <a href="<%= request.getContextPath() %>/listTripsOnDateManager">List trips occuring on a date</a>
 <br>
-
+<a href="<%= request.getContextPath() %>/logout">Log Out</a>
+<br>
 </body>
 </html>
