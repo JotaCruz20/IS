@@ -25,6 +25,7 @@ public class EditInformation extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = (String) request.getSession().getAttribute("auth");
+        logger.info("Getting client info");
         ClientDTO clientDTO = manageClients.getClientInfo(email);
         request.getSession(true).setAttribute("client", clientDTO);
         request.getRequestDispatcher("/secured/editInfo.jsp").forward(request, response);
@@ -36,7 +37,7 @@ public class EditInformation extends HttpServlet {
         String birthdate = req.getParameter("birthdate");
         String email = (String) req.getSession().getAttribute("auth");
         String password = req.getParameter("password");
-        logger.info("Alterar informação do user: "+email);
+        logger.info("Updating user info: "+email);
 
         try {
             manageClients.updateInfo(email, name, birthdate, password);

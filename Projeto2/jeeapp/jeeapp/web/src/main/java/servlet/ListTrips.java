@@ -38,7 +38,7 @@ public class ListTrips extends HttpServlet {
 
 
         try {
-            List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate); //TODO: MUDAR O FORMATO DA DATA
+            List<BusDTO> busDTOS = manageTrips.getTrips(startDate, endDate);
             logger.info("Trips selected: "+busDTOS);
             req.getSession(true).setAttribute("trips", busDTOS);
             req.getRequestDispatcher("/secured/availableTrips.jsp").forward(req, resp);

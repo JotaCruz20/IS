@@ -25,17 +25,19 @@ public class CreateTrip extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("Getting jsp for createTrip");
         req.getRequestDispatcher("/secured/createTrip.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("Creating bus trip Login");
         String destination = req.getParameter("destination");
         String departure = req.getParameter("departure");
         String price = req.getParameter("price");
         String capacity = req.getParameter("capacity");
         String departureTime = req.getParameter("departureTime");
+
+        logger.info("Creating bus with destination: "+destination+" to: "+departure+" leaving at: "+departureTime+" with capacity: "+capacity+" with price: "+price);
 
         try {
             manageTrips.addTrip(destination,departure,price,capacity,departureTime);

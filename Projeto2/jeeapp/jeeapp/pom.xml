@@ -9,6 +9,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <version>1</version>
     <packaging>pom</packaging>
     <name>Projeto</name>
+    <description>Web app for a bus company</description>
     <modules>
         <module>ejbs</module>
         <module>jpa</module>

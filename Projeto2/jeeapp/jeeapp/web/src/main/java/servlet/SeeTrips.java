@@ -25,8 +25,8 @@ public class SeeTrips extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        logger.info("Getting servelet for seeTrips");
         String email = (String) request.getSession(true).getAttribute("auth");
+        logger.info("Seeing trips for user: "+email);
         List<BusDTO> busDTOList = manageTrips.getTripsUser(email);
         request.setAttribute("trips", busDTOList);
         request.getRequestDispatcher("/secured/listTrips.jsp").forward(request, response);

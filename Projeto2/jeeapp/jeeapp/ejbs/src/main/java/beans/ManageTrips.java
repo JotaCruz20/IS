@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,7 +20,6 @@ import javax.persistence.TypedQuery;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -158,6 +156,7 @@ public class ManageTrips implements IManageTrips {
 
     public List<ClientDTO> getTripsPassenger(int tripId) {
         int flag = 0;
+        logger.info("Getting passanger for trip: "+tripId);
         TypedQuery<Bus> q = em.createQuery("from Bus b " +
                 "where b.id= :tripId", Bus.class).setParameter("tripId", tripId);
         Bus bus = q.getSingleResult();

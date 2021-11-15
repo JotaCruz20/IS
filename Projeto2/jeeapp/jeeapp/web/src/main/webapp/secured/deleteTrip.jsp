@@ -37,7 +37,7 @@
             <td>${trip.destination}</td>
             <td>${trip.departureTime}</td>
             <td>
-                <form action="<%= request.getContextPath() %>/deleteTrip" method="get">
+                <form action="<%= request.getContextPath() %>/deleteTrip" method="post">
                     <input type="hidden" name="tripId" value="${trip.id}" />
                     <input type="submit" value="Delete this trip">
                 </form>

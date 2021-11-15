@@ -50,6 +50,7 @@ public class ManageClients implements IManageClients {
     public void updateInfo(String email, String name, String birthdate, String password) throws ParseException {
         Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(birthdate);
 
+        logger.info("Selecting user: "+email);
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email= :email", Client.class).setParameter("email", email);
         Client client = q.getSingleResult();
@@ -63,17 +64,11 @@ public class ManageClients implements IManageClients {
     }
 
     public void delete(String email){
+        logger.info("Selecting client: "+email+" for removal");
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email= :email", Client.class).setParameter("email", email);
         Client client = q.getSingleResult();
 
-        for (Ticket ticket : client.getTickets()) {
-            TypedQuery<Bus> q1 = em.createQuery("from Bus b " +
-                    "where b.id= :id", Bus.class).setParameter("id", ticket.getBus().getId());
-            Bus bus = q1.getSingleResult();
-            bus.setCapacity(bus.getCapacity()+1);
-            em.persist(bus);
-        }
         em.remove(client);
     }
 
@@ -90,6 +85,7 @@ public class ManageClients implements IManageClients {
 
 
     public void chargeWallet(String email, double money) {
+        logger.info("Adding "+money+" to user: "+email+" wallet");
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email= :email", Client.class).setParameter("email", email);
         Client client = q.getSingleResult();
@@ -112,9 +108,11 @@ public class ManageClients implements IManageClients {
     }
 
     public boolean checkWallet(String busId, String email) {
+        logger.info("getting client: "+email);
         TypedQuery<Client> q = em.createQuery("from Client c " +
                 "where c.email= :email", Client.class).setParameter("email", email);
 
+        logger.info("getting bus: "+busId);
         TypedQuery<Bus> q1 = em.createQuery("from Bus b " +
                 "where b.id= :bus", Bus.class).setParameter("bus", Integer.parseInt(busId));
 

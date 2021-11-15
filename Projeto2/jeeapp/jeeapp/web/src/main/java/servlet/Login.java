@@ -28,10 +28,10 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("Starting Login");
+        logger.info("Logging in");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        logger.info("Email: " + email + " password: " + password);
+        logger.info("Email: " + email);
 
         int b = manageClients.login(email, password);
 

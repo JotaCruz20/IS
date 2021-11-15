@@ -27,7 +27,7 @@ public class BuyTrip extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("tripId");
-        logger.info("Selecting seats trip:" + id);
+        logger.info("Getting seats for trip:" + id);
 
         req.getSession(true).setAttribute("tripSelected", id);
 

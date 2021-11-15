@@ -30,7 +30,7 @@ public class DeleteTrip extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<BusDTO> tripDTOS = manageTrips.getTrips();
-        logger.info("Trips: "+ tripDTOS);
+        logger.info("Getting Trips: "+ tripDTOS);
         req.getSession(true).setAttribute("trips",tripDTOS);
         req.getRequestDispatcher("/secured/deleteTrip.jsp").forward(req, resp);
     }
@@ -38,6 +38,7 @@ public class DeleteTrip extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String tripId = req.getParameter("tripId");
+        logger.info("Deleting trip: "+tripId);
         manageTrips.deleteTrip(tripId);
         req.getRequestDispatcher("/secured/mainM.jsp").forward(req, resp);
     }

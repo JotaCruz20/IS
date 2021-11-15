@@ -20,7 +20,7 @@ import java.util.List;
 
 @WebServlet("/tripsPassengers")
 public class TripsPassengers extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(EditInformation.class);
+    Logger logger = LoggerFactory.getLogger(TripsPassengers.class);
     private static final long serialVersionUID = 1L;
     @EJB
     private IManageTrips manageTrips;
@@ -28,6 +28,7 @@ public class TripsPassengers extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int tripId = Integer.parseInt(request.getParameter("tripId"));
+        logger.info("Getting passengers for trip: "+tripId);
         List<ClientDTO> clientDTO = manageTrips.getTripsPassenger(tripId);
         request.getSession(true).setAttribute("clients", clientDTO);
         request.getRequestDispatcher("/secured/tripsPassenger.jsp").forward(request, response);

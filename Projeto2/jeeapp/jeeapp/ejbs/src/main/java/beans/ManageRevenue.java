@@ -25,14 +25,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Singleton
 public class ManageRevenue implements IManageRevenue {
-    Logger logger = LoggerFactory.getLogger(ManageTrips.class);
+    Logger logger = LoggerFactory.getLogger(ManageRevenue.class);
     @PersistenceContext(unitName = "projeto")
     EntityManager em;
 
