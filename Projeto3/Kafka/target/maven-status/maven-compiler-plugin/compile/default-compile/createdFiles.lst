@@ -1,4 +1,9 @@
+Models/Currency.class
+streams/KafkaStreams.class
 kafka/SimpleConsumer.class
+Models/Clients.class
 kafka/SimpleProducer.class
 streams/SimpleStreamsExercisesb.class
+kafka/Clients.class
+Models/TopicSendClient.class
 streams/SimpleStreamsExercisesa.class
