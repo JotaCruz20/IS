@@ -18,10 +18,21 @@ public class KafkaStreams {
         return json.getDouble("value") / json.getDouble("exchangeRate");
     }
 
+    public static String jsonForBD(String column, Double value,String key){
+        return "{\"schema\":{\"type\":\"struct\",\"fields\":"+
+                "["+
+                "{\"type\":\"int64\",\"optional\":false,\"field\":\"id\"},"+
+                "{\"type\":\"double\",\"optional\":false,\"field\":\""+column+"\"}"+
+                "],"+
+                "\"optional\":false},"+
+                "\"payload\":{\"id\":"+key+",\""+column+"\":"+value+"}}";
+    }
+
     public static void main(String[] args) throws InterruptedException, IOException {
         String topicName1 = "Credits";
         String topicName2 = "Payments";
-        String outtopicname = "Results";
+        String outTopicClient = "client";
+        String outTopicTotals = "totals";
         java.util.Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "projeto");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
@@ -43,29 +54,27 @@ public class KafkaStreams {
                 .reduce(Double::sum);
 
         KTable<String, Double> allCredits = lines
-                .map((k,v) -> new KeyValue<>("0", getEuro(v,"Total"))) //definir que a chave é a mesma para todas
-                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .mapValues( v -> getEuro(v,"Total"))
+                .groupBy((k,v) -> "1", Grouped.with(Serdes.String(), Serdes.Double())) //definir que a chave é a mesma para todas
                 .reduce(Double::sum);
 
         KTable<String, Double> allPayments = lines1
-                .map((k,v) -> new KeyValue<>("0", getEuro(v,"Total"))) //definir que a chave é a mesma para todas
-                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .mapValues( v -> getEuro(v,"Total"))
+                .groupBy((k,v) -> "1", Grouped.with(Serdes.String(), Serdes.Double())) //definir que a chave é a mesma para todas
                 .reduce(Double::sum);
 
 
-        ValueJoiner<Double, Double, Double> balancoTotal = (left, right) -> {
-            return right - left;
-        };
+        ValueJoiner<Double, Double, Double> balancoTotal = (left, right) -> right - left;
 
-        creditsPerClient.toStream().mapValues((k, v) -> k + "- Credits->" + v).to(outtopicname);
+        creditsPerClient.toStream().mapValues((k, v) ->jsonForBD("credit",v,k)).to(outTopicClient);
 
-        paymentsPerClient.mapValues((k, v) -> k + "- Payments->" + v).toStream().to(outtopicname);
+        paymentsPerClient.mapValues((k, v) -> jsonForBD("payment",v,k)).toStream().to(outTopicClient);
 
-        paymentsPerClient.join(creditsPerClient,balancoTotal).mapValues((k, v) -> k + "Balance->" + v).toStream().to(outtopicname);
+        creditsPerClient.join(paymentsPerClient,balancoTotal).mapValues((k, v) -> jsonForBD("balance",v,k)).toStream().to(outTopicClient);
 
-        allCredits.toStream().mapValues((k, v) ->"- Total Credits->" + v).to(outtopicname);
-        allPayments.mapValues((k, v) ->"Total Payments->" + v).toStream().to(outtopicname);
-        allCredits.join(allPayments,balancoTotal).mapValues((k, v) -> "Total Balance->" + v).toStream().to(outtopicname);
+        allCredits.toStream().mapValues((k, v) ->jsonForBD("credit",v,k)).to(outTopicTotals);
+        allPayments.mapValues((k, v) ->jsonForBD("payment",v,k)).toStream().to(outTopicTotals);
+        allCredits.join(allPayments,balancoTotal).mapValues((k, v) -> jsonForBD("balance",v,k)).toStream().to(outTopicTotals);
 
         org.apache.kafka.streams.KafkaStreams streams = new org.apache.kafka.streams.KafkaStreams(builder.build(), props);
         streams.start();

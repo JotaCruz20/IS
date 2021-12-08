@@ -1,7 +1,15 @@
 docker-compose up --build
-
 bin/zookeeper-server-start.sh config/zookeeper.properties
 bin/kafka-server-start.sh config/server.properties
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Results
 java -jar target/Clients.jar
 java -cp target/Clients.jar kafka.Client
+
+bin/connect-standalone.sh config/connect-standalone.properties config/connect-jdbc-source-trabalho3.properties config/connect-jdbc-source-trabalho3-currency.properties config/connect-jdbc-sink-trabalho3.properties
+
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic Payments
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic DBInfoCurrency
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic DBInfo
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic Credits
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic totals
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic clients

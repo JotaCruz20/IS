@@ -5,6 +5,7 @@ public class Clients {
     private String name;
     private double credit;
     private double payment;
+    private int adminId;
 
     public int getId() {
         return id;
@@ -12,6 +13,14 @@ public class Clients {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     public String getName() {
@@ -38,10 +47,11 @@ public class Clients {
         this.payment = payment;
     }
 
-    public Clients(int id, String name, double credit, double payment) {
+    public Clients(int id, String name, double credit, double payment, int adminId) {
         this.id = id;
         this.name = name;
         this.credit = credit;
         this.payment = payment;
+        this.adminId = adminId;
     }
 }
