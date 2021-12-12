@@ -24,7 +24,7 @@ public class MyService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addClient(ClientDTO client) {
         Admin admin = beans.login(client.getAdmin().getName());
-        Client client1 = new Client(client.getName(),0,0,0,admin);
+        Client client1 = new Client(client.getName(),0,0,0,admin,0,0);
         beans.addClient(client1);
         String str = "Person received : " + client.getName();
         return Response.status(Response.Status.OK).entity(str).build();
@@ -73,7 +73,7 @@ public class MyService {
         List<ClientDTO> clientDTOS = new ArrayList<>();
         for (Client c:personList) {
             AdminDTO adminDTO = new AdminDTO(c.getAdmin().getId(), c.getAdmin().getName());
-            clientDTOS.add(new ClientDTO(c.getId(),c.getName(),c.getCredit(),c.getPayment(),c.getBalance(),adminDTO));
+            clientDTOS.add(new ClientDTO(c.getId(),c.getName(),c.getCredit(),c.getPayment(),c.getBalance(),adminDTO, c.getLastMonthBill()));
         }
         return Response.ok().entity(clientDTOS).build();
     }
@@ -100,5 +100,49 @@ public class MyService {
             currencyDTOS.add(new CurrencyDTO(c.getName(),c.getExchangeRate()));
         }
         return Response.ok().entity(currencyDTOS).build();
+    }
+
+    @GET
+    @Path("/totals")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTotals() {
+        Totals totals = beans.getTotals();
+        TotalsDTO totalsDTO = new TotalsDTO(totals.getCredit(),totals.getPayment(),totals.getBalance());
+        return Response.ok().entity(totalsDTO).build();
+    }
+
+    @GET
+    @Path("/debt")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDebt() {
+        Totals totals = beans.getTotals();
+        Client c = totals.getHighestDebt();
+        Admin a = totals.getHighestDebt().getAdmin();
+        AdminDTO adminDTO = new AdminDTO(a.getId(),a.getName());
+        ClientDTO clientDTO = new ClientDTO(c.getId(),c.getName(),c.getCredit(),c.getPayment(),c.getBalance(),adminDTO, c.getLastMonthBill());
+        return Response.ok().entity(clientDTO).build();
+    }
+
+    @GET
+    @Path("/noPaymentClient")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNoPaymentClient() {
+        List<Client> personList = beans.getClientNoPayments();
+        List<ClientDTO> clientDTOS = new ArrayList<>();
+        for (Client c:personList) {
+            AdminDTO adminDTO = new AdminDTO(c.getAdmin().getId(), c.getAdmin().getName());
+            clientDTOS.add(new ClientDTO(c.getId(),c.getName(),c.getCredit(),c.getPayment(),c.getBalance(),adminDTO, c.getLastMonthBill()));
+        }
+        return Response.ok().entity(clientDTOS).build();
+    }
+
+    @GET
+    @Path("/revenue")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRevenue() {
+        Totals totals = beans.getTotals();
+        Admin a = totals.getHighestRevenue();
+        AdminDTO adminDTO = new AdminDTO(a.getId(),a.getName());
+        return Response.ok().entity(adminDTO).build();
     }
 }

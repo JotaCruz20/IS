@@ -1,15 +1,15 @@
 docker-compose up --build
+
 bin/zookeeper-server-start.sh config/zookeeper.properties
 bin/kafka-server-start.sh config/server.properties
+
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic proj3-application-KSTREAM-AGGREGATE-STATE-STORE-0000000047-changelog, proj3-application-KSTREAM-AGGREGATE-STATE-STORE-0000000068-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000003-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000009-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000016-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000016-repartition,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000026-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000026-repartition,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000053-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000053-repartition,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000059-changelog,proj3-application-KSTREAM-REDUCE-STATE-STORE-0000000059-repartition,proj3-application-billCredit-changelog,proj3-application-paymentCredit-changelog
+
+
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic Results
 java -jar target/Clients.jar
-java -cp target/Clients.jar kafka.Client
+java -cp target/Clients.jar kafka.Clients
 
 bin/connect-standalone.sh config/connect-standalone.properties config/connect-jdbc-source-trabalho3.properties config/connect-jdbc-source-trabalho3-currency.properties config/connect-jdbc-sink-trabalho3.properties
 
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic Payments
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic DBInfoCurrency
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic DBInfo
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic Credits
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic totals
-bin/kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic clients

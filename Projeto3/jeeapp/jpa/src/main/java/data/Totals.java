@@ -18,6 +18,12 @@ public class Totals {
     @Column
     private double balance;
 
+    @ManyToOne
+    private Client highestDebt;
+
+    @ManyToOne
+    private Admin highestRevenue;
+
     public int getId() {
         return id;
     }
@@ -48,6 +54,22 @@ public class Totals {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public Client getHighestDebt() {
+        return highestDebt;
+    }
+
+    public void setHighestDebt(Client highestDebt) {
+        this.highestDebt = highestDebt;
+    }
+
+    public Admin getHighestRevenue() {
+        return highestRevenue;
+    }
+
+    public void setHighestRevenue(Admin highestRevenue) {
+        this.highestRevenue = highestRevenue;
     }
 
     public Totals() {

@@ -11,6 +11,7 @@ public class ClientDTO implements Serializable {
     private double payment;
     private double balance;
     private AdminDTO admin;
+    private double lastMonthBill;
 
     public int getId() {
         return id;
@@ -60,13 +61,22 @@ public class ClientDTO implements Serializable {
         this.admin = admin;
     }
 
-    public ClientDTO(int id, String name, double credit, double payment, double balance, AdminDTO admin) {
+    public double getLastMonthBill() {
+        return lastMonthBill;
+    }
+
+    public void setLastMonthBill(double lastMonthBill) {
+        this.lastMonthBill = lastMonthBill;
+    }
+
+    public ClientDTO(int id, String name, double credit, double payment, double balance, AdminDTO admin, double lastMonthBill) {
         this.id = id;
         this.name = name;
         this.credit = credit;
         this.payment = payment;
         this.balance = balance;
         this.admin = admin;
+        this.lastMonthBill = lastMonthBill;
     }
 
     public ClientDTO(String name, AdminDTO admin) {

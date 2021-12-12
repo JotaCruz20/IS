@@ -1,5 +1,9 @@
+/workspace/Kafka/src/main/java/Models/JsonDeserializer.java
 /workspace/Kafka/src/main/java/streams/KafkaStreams.java
 /workspace/Kafka/src/main/java/Models/Clients.java
 /workspace/Kafka/src/main/java/kafka/Clients.java
+/workspace/Kafka/src/main/java/Models/CustomSerdes.java
+/workspace/Kafka/src/main/java/Models/JsonSerializer.java
 /workspace/Kafka/src/main/java/Models/Currency.java
+/workspace/Kafka/src/main/java/Models/Mapper.java
 /workspace/Kafka/src/main/java/Models/TopicSendClient.java

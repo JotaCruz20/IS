@@ -9,6 +9,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -22,6 +23,7 @@ public class Clients {
         String topicNameConsumer2 = "DBInfoCurrency";
         String topicNameProduce1 = "Credits";
         String topicNameProduce2 = "Payments";
+
         // create instance for properties to access producer configs
         Properties propsProducer = new Properties();
         //Assign localhost id
@@ -86,38 +88,34 @@ public class Clients {
         consumerClients.subscribe(Collections.singletonList(topicNameConsumer1));
         consumerCurrencies.subscribe(Collections.singletonList(topicNameConsumer2));
 
-
+        HashMap<Integer, Double> clientPayments = new HashMap<Integer, Double>();
+        HashMap<Integer, Double> clientCredits = new HashMap<Integer, Double>();
 
         while (true) {
             ArrayList<Models.Clients> clients = new ArrayList<>();
             ArrayList<Models.Currency> currencies = new ArrayList<>();
 
-            System.out.println("LER Clients");
             ConsumerRecords<String, String> records = consumerClients.poll(Long.MAX_VALUE);
             for (ConsumerRecord<String, String> record : records) {
-                //System.out.println(record.key() + " => " + record.value());
                 JSONObject json = new JSONObject(record.value());
                 String name = json.getJSONObject("payload").getString("name");
                 Double credit = json.getJSONObject("payload").getDouble("credit");
                 Double payment = json.getJSONObject("payload").getDouble("payment");
                 int admin_id = json.getJSONObject("payload").getInt("admin_id");
                 int client_id = json.getJSONObject("payload").getInt("id");
-                Models.Clients c = new Models.Clients(client_id,name,credit,payment,admin_id);
-                System.out.println(c);
+                Models.Clients c = new Models.Clients(client_id, name, credit, payment, admin_id);
                 clients.add(c);
             }
 
-            System.out.println("LER CURRENCIES");
             ConsumerRecords<String, String> records2 = consumerCurrencies.poll(Long.MAX_VALUE);
             for (ConsumerRecord<String, String> record : records2) {
                 JSONObject json = new JSONObject(record.value());
                 String name = json.getJSONObject("payload").getString("name");
                 Double credit = json.getJSONObject("payload").getDouble("exchangerate");
-                Currency c = new Currency(name,credit);
-                System.out.println(c);
+                Currency c = new Currency(name, credit);
                 currencies.add(c);
             }
-            int r = ThreadLocalRandom.current().nextInt(5,10);
+            int r = ThreadLocalRandom.current().nextInt(5, 10);
 
             //Credits
             for (int i = 0; i < r; i++) {
@@ -127,18 +125,25 @@ public class Clients {
                 int r2 = ThreadLocalRandom.current().nextInt(0, clients.size());
                 Models.Clients clients1 = clients.get(r2);
 
-                double d = ThreadLocalRandom.current().nextDouble(0,100);
+                double d = ThreadLocalRandom.current().nextDouble(0, 100);
 
-                TopicSendClient topicSendClient = new TopicSendClient(c.getExchangeRate(),d);
+                TopicSendClient topicSendClient = new TopicSendClient(c.getExchangeRate(), d, clients1.getAdminId());
 
                 String jsonStr = new Gson().toJson(topicSendClient);
-                System.out.println("Credit: "+clients1.getId()+"->"+jsonStr);
+                //System.out.println("Credit: " + clients1.getId() + "->" + jsonStr);
                 producer.send(new ProducerRecord<String, String>(topicNameProduce1, Integer.toString(clients1.getId()),
                         jsonStr));
+
+                if(!clientCredits.containsKey(clients1.getId())){
+                    clientCredits.put(clients1.getId(), (d/c.getExchangeRate()));
+                }
+                else{
+                    clientCredits.put(clients1.getId(), clientCredits.get(clients1.getId()) + (d/c.getExchangeRate()));
+                }
             }
 
             // Payments
-            r = ThreadLocalRandom.current().nextInt(1,10);
+            r = ThreadLocalRandom.current().nextInt(1, 10);
             for (int i = 0; i < r; i++) {
                 int r1 = ThreadLocalRandom.current().nextInt(0, currencies.size());
                 Currency c = currencies.get(r1);
@@ -146,14 +151,28 @@ public class Clients {
                 int r2 = ThreadLocalRandom.current().nextInt(0, clients.size());
                 Models.Clients clients1 = clients.get(r2);
 
-                double d = ThreadLocalRandom.current().nextDouble(0,100);
+                double d = ThreadLocalRandom.current().nextDouble(0, 100);
 
-                TopicSendClient topicSendClient = new TopicSendClient(c.getExchangeRate(),d);
+                TopicSendClient topicSendClient = new TopicSendClient(c.getExchangeRate(), d, clients1.getAdminId());
 
                 String jsonStr = new Gson().toJson(topicSendClient);
-                System.out.println("Payment: "+clients1.getId()+"->"+jsonStr);
+                //System.out.println("Payment: " + clients1.getId() + "->" + jsonStr);
                 producer.send(new ProducerRecord<String, String>(topicNameProduce2, Integer.toString(clients1.getId()),
                         jsonStr));
+
+                if(!clientPayments.containsKey(clients1.getId())){
+                    clientPayments.put(clients1.getId(), (d/c.getExchangeRate()));
+                }
+                else{
+                    clientPayments.put(clients1.getId(), clientPayments.get(clients1.getId()) + (d/c.getExchangeRate()));
+                }
+            }
+            for (int key: clientCredits.keySet()) {
+                System.out.println("Total Credits: "+key + "->" + clientCredits.get(key));
+            }
+
+            for (int key: clientPayments.keySet()) {
+                System.out.println("Total Payments: "+key + "->" + clientPayments.get(key));
             }
             Thread.sleep(50000);
         }

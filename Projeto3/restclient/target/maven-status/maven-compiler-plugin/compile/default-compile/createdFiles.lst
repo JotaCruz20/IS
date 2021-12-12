@@ -1,9 +1,13 @@
-main/RestClient.class
+main/RestClient$8.class
 data/AdminDTO.class
-data/CurrencyDTO.class
 main/RestClient$2.class
-main/RestClient$4.class
 main/RestClient$1.class
+data/TotalsDTO.class
+main/RestClient$5.class
+main/RestClient.class
+data/CurrencyDTO.class
+main/RestClient$6.class
+main/RestClient$4.class
+main/RestClient$7.class
 data/ClientDTO.class
 main/RestClient$3.class
-data/TotalsDTO.class

@@ -55,6 +55,12 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <artifactId>postgresql</artifactId>
             <version>42.3.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.32</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>Clients</finalName>
@@ -95,6 +101,22 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
                             <mainClass>streams.KafkaStreams</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>15</source>
+                    <target>15</target>
                 </configuration>
             </plugin>
             <plugin>

@@ -37,7 +37,7 @@ public class RestClient {
         }while (answer.getName().equals("error"));
 
         do {
-            System.out.println("What do you want to do?\n1-List Clients\n2-List Admins\n3-List Currencies\n4-Add Client\n5-Add Admin\n6-Add Currency\n0-Quit");
+            System.out.println("What do you want to do?\n1-List Clients\n2-List Admins\n3-List Currencies\n4-List Highest Debt Client\n5-List Clients with no Payments\n6-List Admin with the most Revenue\n7-List Totals\n8-Add Client\n9-Add Admin\n10-Add Currency\n0-Quit");
             n = scanner.nextInt();
             scanner.nextLine();
             switch (n){
@@ -72,28 +72,60 @@ public class RestClient {
                     response.close();
                     break;
                 case 4:
+                    target = client.target("http://wildfly:8080/rest/rest/myservice/debt");
+                    response = target.request().get();
+                    ClientDTO clientDTO = response.readEntity(new GenericType<ClientDTO>() {});
+                    System.out.println(clientDTO);
+                    response.close();
+                    break;
+                case 5:
+                    target = client.target("http://wildfly:8080/rest/rest/myservice/noPaymentClient");
+                    response = target.request().get();
+                    clientList = response.readEntity(new GenericType<List<ClientDTO>>() {
+                    });
+                    for (ClientDTO c:clientList) {
+                        System.out.println(c);
+                    }
+                    response.close();
+                    break;
+                case 6:
+                    target = client.target("http://wildfly:8080/rest/rest/myservice/revenue");
+                    response = target.request().get();
+                    AdminDTO adminDTO = response.readEntity(new GenericType<AdminDTO>() {});
+                    System.out.println(adminDTO);
+                    response.close();
+                    break;
+                case 7:
+                    target = client.target("http://wildfly:8080/rest/rest/myservice/totals");
+                    response = target.request().get();
+                    TotalsDTO totalsDTO = response.readEntity(new GenericType<TotalsDTO>() {
+                    });
+                    System.out.println(totalsDTO);
+                    response.close();
+                    break;
+
+
+                case 8:
                     target = client.target("http://wildfly:8080/rest/rest/myservice/addClient");
                     System.out.println("Name: ");
                     String name = scanner.nextLine();
                     ClientDTO c = new ClientDTO(name,answer);
                     Entity<ClientDTO> input = Entity.entity(c, MediaType.APPLICATION_JSON);
                     response = target.request().post(input);
-                    value = response.readEntity(String.class);
-                    System.out.println("RESPONSE4: " + value);
+                    response.readEntity(String.class);
                     response.close();
                     break;
-                case 5:
+                case 9:
                     target = client.target("http://wildfly:8080/rest/rest/myservice/addManager");
                     System.out.println("Name: ");
                     name = scanner.nextLine();
                     AdminDTO a = new AdminDTO(name);
                     Entity<AdminDTO> input2 = Entity.entity(a, MediaType.APPLICATION_JSON);
                     response = target.request().post(input2);
-                    value = response.readEntity(String.class);
-                    System.out.println("RESPONSE4: " + value);
+                    response.readEntity(String.class);
                     response.close();
                     break;
-                case 6:
+                case 10:
                     target = client.target("http://wildfly:8080/rest/rest/myservice/addCurrency");
                     System.out.println("Name: ");
                     name = scanner.nextLine();
@@ -102,8 +134,7 @@ public class RestClient {
                     CurrencyDTO cr = new CurrencyDTO(name,rate);
                     Entity<CurrencyDTO> input3 = Entity.entity(cr, MediaType.APPLICATION_JSON);
                     response = target.request().post(input3);
-                    value = response.readEntity(String.class);
-                    System.out.println("RESPONSE4: " + value);
+                    response.readEntity(String.class);
                     response.close();
                     break;
                 case 0:

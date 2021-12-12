@@ -8,6 +8,7 @@ public class TotalsDTO implements Serializable {
     private double credit;
     private double payment;
     private double balance;
+    private ClientDTO client;
 
     public double getCredit() {
         return credit;
@@ -31,6 +32,14 @@ public class TotalsDTO implements Serializable {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public ClientDTO getClient() {
+        return client;
+    }
+
+    public void setClient(ClientDTO client) {
+        this.client = client;
     }
 
     public TotalsDTO(double credit, double payment, double balance) {

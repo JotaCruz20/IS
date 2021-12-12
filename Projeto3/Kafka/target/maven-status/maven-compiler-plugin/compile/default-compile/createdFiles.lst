@@ -1,5 +1,10 @@
-Models/Clients.class
 Models/Currency.class
-kafka/Clients.class
-Models/TopicSendClient.class
+Models/Mapper.class
 streams/KafkaStreams.class
+Models/Clients.class
+Models/CustomSerdes$MapperSerde.class
+Models/CustomSerdes.class
+kafka/Clients.class
+Models/JsonSerializer.class
+Models/TopicSendClient.class
+Models/JsonDeserializer.class

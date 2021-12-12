@@ -3,10 +3,20 @@ package Models;
 public class TopicSendClient {
     private double exchangeRate;
     private double value;
+    private int adminID;
 
-    public TopicSendClient(double exchangeRate, double value) {
+    public int getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(int adminID) {
+        this.adminID = adminID;
+    }
+
+    public TopicSendClient(double exchangeRate, double value, int adminID) {
         this.exchangeRate = exchangeRate;
         this.value = value;
+        this.adminID = adminID;
     }
 
     public double getExchangeRate() {
@@ -30,6 +40,7 @@ public class TopicSendClient {
         return "TopicSendClient{" +
                 "exchangeRate=" + exchangeRate +
                 ", value=" + value +
+                ", adminID=" + adminID +
                 '}';
     }
 }

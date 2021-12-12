@@ -3,6 +3,7 @@ package beans;
 import data.Admin;
 import data.Client;
 import data.Currencies;
+import data.Totals;
 
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -45,7 +46,6 @@ public class Bean{
     }
 
     public Admin login(String name){
-        System.out.println(name);
         try {
             TypedQuery<Admin> q = em.createQuery("from Admin a " +
                     "where a.name = :name", Admin.class).setParameter("name", name);
@@ -53,5 +53,15 @@ public class Bean{
         }catch (NoResultException e){
             return null;
         }
+    }
+
+    public Totals getTotals(){
+        TypedQuery<Totals> q = em.createQuery("from Totals t where t.id = 1", Totals.class);
+        return q.getSingleResult();
+    }
+
+    public List<Client> getClientNoPayments(){
+        TypedQuery<Client> q = em.createQuery("from Client c where c.numOfPayments=0", Client.class);
+        return q.getResultList();
     }
 }
